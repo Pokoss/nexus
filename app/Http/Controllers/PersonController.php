@@ -28,7 +28,11 @@ class PersonController extends Controller
         //
         $my_data = User::where('id', Auth::user()->id)->first();
 
-        return Inertia::render('MyLinkScreen', ['my_data' => $my_data]);
+        return Inertia::render('MyLinkScreen', ['my_data' => $my_data])->withViewData([
+            'title' => 'Join Kikumi Kikumi Community',
+            'description' => 'Experience a vast array of services and products from our community',
+            
+        ]);;;
     }
 
     /**
