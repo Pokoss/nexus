@@ -3,6 +3,8 @@ import Navbar from './Components/Navbar'
 import { Avatar } from '@material-tailwind/react'
 import { Link } from '@inertiajs/react'
 import { QRCodeSVG } from 'qrcode.react';
+import * as htmlToImage from 'html-to-image';
+
 
 function MyLinkScreen({ my_data }) {
   const currentUrl = location.hostname;
@@ -64,7 +66,7 @@ function MyLinkScreen({ my_data }) {
               <Link href={'/join/'+ my_data.slug} className="w-full rounded-xl border-2 border-blue-500 bg-white px-3 py-2 font-semibold text-blue-500 hover:bg-blue-500 hover:text-white" ><p className='w-full text-center'>Register User Myself</p></Link>
 
               <button
-                // onClick={downloadImage}
+                onClick={downloadImage}
                 className="w-full rounded-xl border-2 border-red-500 bg-white px-3 py-2 font-semibold text-red-500 hover:bg-red-500 hover:text-white" >Download My QR Code</button>
             </div>
           </div>
