@@ -1,20 +1,21 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Navbar from './Components/Navbar'
 import { Avatar } from '@material-tailwind/react'
 import { Link } from '@inertiajs/react'
+import { QRCodeSVG } from 'qrcode.react';
 
 function MyLinkScreen({ my_data }) {
   const currentUrl = location.hostname;
 
-  // const domEl = useRef(null);
-  // const downloadImage = async ()=>{
-  //     const dataUrl = await htmlToImage.toPng(domEl.current);
+  const domEl = useRef(null);
+  const downloadImage = async ()=>{
+      const dataUrl = await htmlToImage.toPng(domEl.current);
 
-  //     const link = document.createElement('a');
-  //     link.download = `${company.company.name}.png`; 
-  //     link.href =dataUrl;
-  //     link.click();
-  // }
+      const link = document.createElement('a');
+      link.download = `${my_data.slug}.png`; 
+      link.href =dataUrl;
+      link.click();
+  }
 
 
   return (
@@ -24,16 +25,10 @@ function MyLinkScreen({ my_data }) {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           <div className="grid-cols-1 lg:col-span-3">
             <div className="mx-auto flex items-center justify-center  ">
-
-              <Avatar className='ml-4 items-center justify-center'
-                src={`/images/resources/logo.png`}
-                alt="avatar" size="xxl" variant="circular">
-              </Avatar>
+            <div className='mt-3 ml-2'>
+              <QRCodeSVG ref={domEl} value={'https://' + currentUrl + '/join/' + my_data.slug} />
             </div>
-
-            {/* <div className='mt-3 ml-2'>
-              <QRCodeSVG ref={domEl} value={'https://' + currentUrl + '/business/' + company.company.slug} />
-            </div> */}
+            </div>
 
           </div>
 

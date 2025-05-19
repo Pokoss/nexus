@@ -15,7 +15,7 @@ function HomeScreen() {
           <p className="px-8 mt-8 mb-12 text-lg">A community of opportunities for Ugandans aimed at building self-sufficient, modern, healthy, and progressive societies using resources and means available to them.</p>
           <div className="flex flex-wrap justify-center">
             {/* <Link href='/company' className="px-8 py-3 m-2 text-lg font-semibold rounded bg-black shadow-sm shadow-primary  text-gray-100">Scan</Link> */}
-            <Link href='/register-member' className="px-8 py-3 m-2 text-lg border bg-black text-white rounded ">Join Us</Link>
+            <Link href='/join/opoka-daniel-se0ll1urgmhavv6g' className="px-8 py-3 m-2 text-lg border bg-black text-white rounded ">Join Us</Link>
 
           </div>
         </div>

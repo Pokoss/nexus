@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/village/post', [VillageController::class, 'store']);
     
     
-    
+    Route::get('/mylink', [PersonController::class, 'mylink']);
 });
 
 Route::get('/join/{slug}', [PersonController::class, 'index']);
@@ -71,7 +71,7 @@ Route::get('/getvillages', [VillageController::class, 'villages']);
 
 
 
-Route::get('/mylink', [PersonController::class, 'mylink']);
+
 
 Route::get('/dashboard/home', function () {
     return Inertia::render('DashboardHomeScreen');
