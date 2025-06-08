@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\District;
 use App\Models\Person;
 use App\Models\User;
+use App\Models\Village;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,12 +16,33 @@ class PersonController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function home(Request $request)
+    {
+        //
+        $authorization = Auth::user()->level;
+
+        if($authorization < 2){
+            return Inertia::render('RestrictedScreen');
+        }
+ 
+        $districts = District::all()->count();
+        $villages = Village::all()->count();
+        $codinators = User::where('level','>',0)->count();
+        $people = Person::all()->count();
+
+       
+        return Inertia::render('DashboardHomeScreen',['districts' => $districts,'villages'=>$villages,'codinators'=>$codinators, 'people'=>$people]);
+        
+    }
     public function index(Request $request, $slug)
     {
         //
-        $user = User::where('slug',$slug)->first();
+        
+        $the_user = User::where('slug',$slug)->first();
         $districts = District::all();
-        return Inertia::render('CitizensRegistrationScreen',['districts' => $districts, 'user'=>$user]);
+
+       
+        return Inertia::render('CitizensRegistrationScreen',['districts' => $districts, 'the_user'=>$the_user]);
         
     }
     public function mylink()
@@ -28,11 +50,48 @@ class PersonController extends Controller
         //
         $my_data = User::where('id', Auth::user()->id)->first();
 
-        return Inertia::render('MyLinkScreen', ['my_data' => $my_data])->withViewData([
+        if($my_data->level == 0){
+             return Inertia::render('RestrictedScreen',)->withViewData([
             'title' => 'Join Kikumi Kikumi Community',
             'description' => 'Experience a vast array of services and products from our community',
             
         ]);;;
+        }
+
+        $my_people = Person::where('registered_by',$my_data->id)->with('village.parish.subcounty.county.district')->paginate(10);
+
+        return Inertia::render('MyLinkScreen', ['my_data' => $my_data, 'my_people' => $my_people])->withViewData([
+            'title' => 'Join Kikumi Kikumi Community',
+            'description' => 'Experience a vast array of services and products from our community',
+            
+        ]);;;
+    }
+
+    public function getPeople(Request $request){
+
+        $authorization = Auth::user()->level;
+
+        if($authorization < 2){
+            return Inertia::render('RestrictedScreen');
+        }
+
+        $my_people = Person::with('village.parish.subcounty.county.district')->paginate(10);
+
+        return Inertia::render('DashboardBiodataScreen', ['people'=> $my_people]);
+
+    }
+    public function getCodinators(Request $request){
+
+        $authorization = Auth::user()->level;
+
+        if($authorization < 2){
+            return Inertia::render('RestrictedScreen');
+        }
+
+        $codinators = User::paginate(10);
+
+        return Inertia::render('DashboardCodinatorScreen', ['codinators'=> $codinators]);
+
     }
 
     /**

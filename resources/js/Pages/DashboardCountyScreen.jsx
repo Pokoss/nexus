@@ -4,109 +4,124 @@ import DataTable from 'react-data-table-component'
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Option, Select, Typography } from '@material-tailwind/react'
 import { router, useForm } from '@inertiajs/react'
 
-function DashboardCountyScreen({districts,counties}) {
+function DashboardCountyScreen({ districts, counties }) {
     console.log(counties)
- 
+
 
     const [district, setDistrict] = useState('');
 
 
     const { data, setData, processing, post, reset, errors } = useForm();
-        const [search, setSearch] = useState('');
-        const [page, setPage] = useState(1);
-    
-        const fetchData = (page) => {
-            router.get(`/dashboard/county`, { page, search }, { preserveState: true });
-        };
-        const handlePageChange = (page) => {
-            setPage(page);
-            fetchData(page)
-        };
-    
-        const handleSearch = e => {
-            e.preventDefault();
-            setSearch(e.target.value)
-            setPage(1)
-            var search = e.target.value
-            router.get(`/dashboard//hr/employee`, {
-                search, page: 1
-            }, {
-                preserveState: true, preserveScroll: true, onSuccess: () => {
-                }
-            });
-        }
-    
-        const handleSubmit = async (event) => {
-            event.preventDefault();
-   
-            post('/dashboard/county/post', {
-                preserveScroll: true, preserveState: true,
-                onSuccess: () => {
-                    //   toast.success('We have received you request, we shall contact you shortly')
-                    reset();
-                    setData({})
-                    handleOpen();
-                }
-            });
-    
-        }
-    
-        const [size, setSize] = useState(null);
-        const handleOpen = (value) => setSize(value);
-        const [sizeEdit, setSizeEdit] = useState(null);
-        const handleOpenEdit = (value) => setSizeEdit(value);
-        const customStyles = {
-            headRow: {
-                style: {
-                    border: 'none',
-                },
-            },
-            headCells: {
-                style: {
-                    color: '#997400',
-                    fontSize: '14px',
-                },
-            },
-            rows: {
-                highlightOnHoverStyle: {
-                    backgroundColor: 'rgb(230, 244, 244)',
-                    borderBottomColor: '#FFFFFF',
-                    outline: '1px solid #FFFFFF',
-                },
-            },
-            pagination: {
-                style: {
-                    border: 'none',
-                },
-            },
-        };
-        const columns = [
-            {
-                name: 'County',
-                selector: row => row.county,
-            },
-            {
-                name: 'District',
-                selector: row => row.district.district,
-            },
-    
-            ,
-            {
-                name: 'Added On',
-                selector: row => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }),
-            },
-            {
-                selector: row => <button onClick={() => editEmployee(row.user.name, row.user.email, row.position, row.id)} className='bg-green-600 rounded-md p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                </svg>
-                </button>
-            },]
+    const [search, setSearch] = useState('');
+    const [page, setPage] = useState(1);
 
-            
-  return (
-    <div>
-        
-        <DataTable
+    const fetchData = (page) => {
+        router.get(`/dashboard/county`, { page, search }, { preserveState: true });
+    };
+    const handlePageChange = (page) => {
+        setPage(page);
+        fetchData(page)
+    };
+
+    const handleSearch = e => {
+        e.preventDefault();
+        setSearch(e.target.value)
+        setPage(1)
+        var search = e.target.value
+        router.get(`/dashboard//hr/employee`, {
+            search, page: 1
+        }, {
+            preserveState: true, preserveScroll: true, onSuccess: () => {
+            }
+        });
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        post('/dashboard/county/post', {
+            preserveScroll: true, preserveState: true,
+            onSuccess: () => {
+                //   toast.success('We have received you request, we shall contact you shortly')
+                reset();
+                setData({})
+                handleOpen();
+            }
+        });
+
+    }
+
+    const [size, setSize] = useState(null);
+    const handleOpen = (value) => setSize(value);
+    const [sizeEdit, setSizeEdit] = useState(null);
+    const handleOpenEdit = (value) => setSizeEdit(value);
+
+
+    const [editCounty, setEditCounty] = useState('');
+    const [editDistrict, setEditDistrict] = useState('');
+
+    function editTheCounty(county, district) {
+        handleOpenEdit("xl")
+
+
+
+        setEditCounty(county);
+        setEditDistrict(district);
+    }
+
+
+    const customStyles = {
+        headRow: {
+            style: {
+                border: 'none',
+            },
+        },
+        headCells: {
+            style: {
+                color: '#997400',
+                fontSize: '14px',
+            },
+        },
+        rows: {
+            highlightOnHoverStyle: {
+                backgroundColor: 'rgb(230, 244, 244)',
+                borderBottomColor: '#FFFFFF',
+                outline: '1px solid #FFFFFF',
+            },
+        },
+        pagination: {
+            style: {
+                border: 'none',
+            },
+        },
+    };
+    const columns = [
+        {
+            name: 'County',
+            selector: row => row.county,
+        },
+        {
+            name: 'District',
+            selector: row => row.district.district,
+        },
+
+        ,
+        {
+            name: 'Added On',
+            selector: row => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }),
+        },
+        {
+            selector: row => <button onClick={() => editTheCounty(row.county, row.district.district, row.id)} className='bg-green-600 rounded-md p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+            </svg>
+            </button>
+        },]
+
+
+    return (
+        <div>
+
+            <DataTable
                 title={'Counties' &&
                     <div className='flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0 whitespace-nowrap items-start md:items-center justify-between w-full border-b-2 border-primary pb-3 pt-2'>
                         <span>{'Counties'}</span>
@@ -149,8 +164,8 @@ function DashboardCountyScreen({districts,counties}) {
             // expandableRowsComponent={ExpandableComponent}
             // expandableRowExpanded={row=>true}
             />
-    
-    <Fragment>
+
+            <Fragment>
                 <Dialog
                     open={
                         size === "xl"
@@ -175,13 +190,13 @@ function DashboardCountyScreen({districts,counties}) {
 
 
 
-                            <Select label='District' value={data.district} onChange={ e=> setData('district',e)} className='w-full' title='District'>
+                            <Select label='District' value={data.district} onChange={e => setData('district', e)} className='w-full' title='District'>
 
-                             
-                                {districts.map((district)=>
-                                <Option value={district.id}>{district.district}</Option>
+
+                                {districts.map((district) =>
+                                    <Option value={district.id}>{district.district}</Option>
                                 )}
-                               
+
                             </Select>
                             <Input label='County'
                                 value={data.county ?? ''} onChange={e => setData('county', e.target.value)} size='sm'
@@ -204,10 +219,59 @@ function DashboardCountyScreen({districts,counties}) {
                 </Dialog>
 
             </Fragment>
-    </div>
+            <Fragment>
+                <Dialog
+                    open={
+                        sizeEdit === "xl"
+                    }
+                    size={sizeEdit}
+                    handler={handleOpenEdit}
+                >
+                    <DialogHeader>
+                        <Typography variant="h5" color="blue-gray">
+                            Edit County
+                        </Typography>
+                    </DialogHeader>
+                    <form
+                    // onSubmit={postEdit}
+                    >
+                        <DialogBody divider className="grid place-items-center gap-4">
 
-    
-  )
+
+                            <Input color='deep-orange' label='District' disabled
+                                value={editDistrict} onChange={(event) => setEditDistrict(event.target.value)} size='sm'
+                            />
+                            <Input color='deep-orange' label='County'
+                                value={editCounty} onChange={(event) => setEditCounty(event.target.value)} size='sm'
+                            />
+
+
+
+                        </DialogBody>
+                        <DialogFooter>
+                            <div className='flex w-full justify-between'>
+                                <Button
+                                    // onClick={postDelete} 
+                                    variant="gradient" color="red">
+                                    Delete
+                                </Button>
+                                <div className="space-x-2">
+                                    <Button onClick={handleOpenEdit} variant="gradient" color="blue-gray">
+                                        Close
+                                    </Button>
+                                    <Button type='submit' className='bg-black'>
+                                        Edit
+                                    </Button>
+                                </div>
+                            </div>
+                        </DialogFooter>
+                    </form>
+                </Dialog>
+            </Fragment>
+        </div>
+
+
+    )
 }
 DashboardCountyScreen.layout = page => <Layout children={page} />
 export default DashboardCountyScreen

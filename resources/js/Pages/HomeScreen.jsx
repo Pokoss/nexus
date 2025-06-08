@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './Components/Navbar'
 import { Link } from '@inertiajs/react'
 import { Typography } from '@material-tailwind/react'
+import Footer from '@/Components/Footer'
 
 function HomeScreen() {
   return (
@@ -96,7 +97,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Ocheng Timothy</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
               </div>
             </div>
 
@@ -113,7 +114,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Rugumayo Roy</h3>
-                {/* <span class="mt-1 font-medium text-gray-600 ">Editor</span> */}
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
               </div>
             </div>
             
@@ -265,7 +266,7 @@ function HomeScreen() {
 
 
 
-
+<Footer/>
 
     </div>
   )

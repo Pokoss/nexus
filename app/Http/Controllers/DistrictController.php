@@ -14,6 +14,7 @@ class DistrictController extends Controller
     public function index()
     {
         //
+        
         $districts = District::with('counties')->latest()->paginate(10);
         return Inertia::render('DashboardDistrictScreen', ['districts'=> $districts ]);
 

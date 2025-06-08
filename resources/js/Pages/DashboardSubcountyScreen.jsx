@@ -84,6 +84,21 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
     const handleOpen = (value) => setSize(value);
     const [sizeEdit, setSizeEdit] = useState(null);
     const handleOpenEdit = (value) => setSizeEdit(value);
+
+     
+                const [editSubcounty,setEditSubcounty] = useState('');
+                const [editCounty,setEditCounty] = useState('');
+                const [editDistrict,setEditDistrict] = useState('');
+        
+                function editTheSubcounty( subcounty, county,district) {
+                handleOpenEdit("xl")
+    
+               
+                setEditSubcounty(subcounty);
+                setEditCounty(county);
+                setEditDistrict(district);
+            }
+
     const customStyles = {
         headRow: {
             style: {
@@ -129,10 +144,10 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
             selector: row => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }),
         },
         {
-            selector: row => <button onClick={() => editEmployee(row.user.name, row.user.email, row.position, row.id)} className='bg-green-600 rounded-md p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-            </svg>
-            </button>
+            selector: row => <button onClick={() => editTheSubcounty( row.subcounty,row.county.county,row.county.district.district, row.id)} className='bg-green-600 rounded-md p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                </svg>
+                </button>
         },]
     return (
         <div>
@@ -249,6 +264,58 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
                     </form>
                 </Dialog>
 
+            </Fragment>
+            <Fragment>
+                <Dialog
+                    open={
+                        sizeEdit === "xl"
+                    }
+                    size={sizeEdit}
+                    handler={handleOpenEdit}
+                >
+                    <DialogHeader>
+                        <Typography variant="h5" color="blue-gray">
+                            Edit Subcounty
+                        </Typography>
+                    </DialogHeader>
+                    <form
+                    // onSubmit={postEdit}
+                    >
+                        <DialogBody divider className="grid place-items-center gap-4">
+
+
+                            <Input color='deep-orange' label='District' disabled
+                                value={editDistrict} onChange={(event) => setEditDistrict(event.target.value)} size='sm'
+                            />
+                            <Input color='deep-orange' label='County' disabled
+                                value={editCounty} onChange={(event) => setEditCounty(event.target.value)} size='sm'
+                            />
+                            <Input color='deep-orange' label='Subcounty' 
+                                value={editSubcounty} onChange={(event) => setEditSubcounty(event.target.value)} size='sm'
+                            />
+                            
+
+
+                        </DialogBody>
+                        <DialogFooter>
+                            <div className='flex w-full justify-between'>
+                                <Button
+                                    // onClick={postDelete} 
+                                    variant="gradient" color="red">
+                                    Delete
+                                </Button>
+                                <div className="space-x-2">
+                                    <Button onClick={handleOpenEdit} variant="gradient" color="blue-gray">
+                                        Close
+                                    </Button>
+                                    <Button type='submit' className='bg-black'>
+                                        Edit
+                                    </Button>
+                                </div>
+                            </div>
+                        </DialogFooter>
+                    </form>
+                </Dialog>
             </Fragment>
         </div>
     )

@@ -6,10 +6,11 @@ import { Fragment } from 'react';
 import Select from 'react-select'
 import { useState } from 'react';
 import Navbar from './Components/Navbar'
+import Footer from '@/Components/Footer';
 
-function CitizensRegistrationScreen({ districts, user }) {
+function CitizensRegistrationScreen({ districts, the_user }) {
 
-  console.log(user.id)
+  console.log(the_user)
   const { data, setData, processing, post, reset, errors } = useForm();
   const [counties, setCounties] = useState([]);
   const [loadingCounties, setLoadingCounties] = useState(false);
@@ -109,9 +110,9 @@ function CitizensRegistrationScreen({ districts, user }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setData('user',user.id);
+    
 
-    post('/join/post',{user:user.id}, {
+    post('/join/post',{user:the_user}, {
       preserveScroll: true, preserveState: true,
       onSuccess: () => {
         //   toast.success('We have received you request, we shall contact you shortly')
@@ -129,13 +130,13 @@ function CitizensRegistrationScreen({ districts, user }) {
     <div>
       <Head>
         <title>
-          Register Memeber
+          Register Member
         </title>
       </Head>
       <Navbar />
       <section className="max-w-4xl p-6 mx-auto bg-gray-50 rounded-md shadow-md shadow-gray-500 my-10">
         <div className='flex justify-center'>
-          <h1 className="text-xl font-bold text-gray-800 dark:text-white">Register New Kikumi Kikumi Comunity Member</h1>
+          <h1 className="text-xl font-bold text-gray-800 dark:text-white">Register New Kikumi Kikumi Community Member</h1>
         </div>
         <div className='my-6'>
           <form
@@ -242,7 +243,7 @@ function CitizensRegistrationScreen({ districts, user }) {
         </div>
       </section>
       {/* <ToastContainer /> */}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }

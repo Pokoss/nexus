@@ -5,7 +5,7 @@ import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Select, 
 import { router, useForm } from '@inertiajs/react';
 
 
-function DashboardBiodataScreen() {
+function DashboardBiodataScreen({people}) {
     const [search, setSearch] = useState('');
     const { data, setData, processing, post, reset, errors } = useForm();
 
@@ -82,73 +82,46 @@ function DashboardBiodataScreen() {
     };
 
     const columns = [
-        {
-            name: 'Name',
-            selector: row => row.event,
-        },
-        {
-            name: 'Phone',
-            selector: row => row.phone,
-        },
-        {
-            name: 'District',
-            selector: row => row.district,
-        },
-        {
-            name: 'Subcounty',
-            selector: row => row.subcounty,
-        },
-        {
-            name: 'Parish',
-            selector: row => row.parish,
-        },
-        {
-            name: 'Village',
-            selector: row => row.village,
-        },
-
-        ,
-        {
-            name: 'Added On',
-            selector: row => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }),
-        },
-        {
-            selector: row => <button onClick={() => editEmployee(row.user.name, row.user.email, row.position, row.id)} className='bg-green-600 rounded-md p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-            </svg>
-            </button>
-        },]
-    const expenses = [
-        {
-            id: 1,
-            event: 'Kagwa mike',
-            phone: '07532356743',
-            district: 'Mukono',
-            subcounty: 'Goma Division',
-            parish: 'Nantabulirwa Ward',
-            village: 'Nantabulirwa',
-        },
-        {
-            id: 1,
-            event: 'Mulondo Yafessi',
-            phone: '0752236664',
-            district: 'Mukono',
-            subcounty: 'Goma Division',
-            parish: 'Nantabulirwa Ward',
-            village: 'Nantabulirwa',
-        },
-        {
-            id: 1,
-            event: 'Opoka Daniel',
-            phone: '0752553236',
-            district: 'Mukono',
-            subcounty: 'Goma Division',
-            parish: 'Nantabulirwa Ward',
-            village: 'Nantabulirwa',
-        },
-
-
+      {
+          name: 'Full Name',
+          selector: row => row.name,
+      },
+      {
+          name: 'NIN',
+          selector: row => row.nin,
+      },
+      {
+          name: 'Phone',
+          selector: row => row.phone,
+      },
+      {
+          name: 'District',
+          selector: row => row.village.parish.subcounty.county.district.district,
+      },
+      {
+          name: 'County',
+          selector: row => row.village.parish.subcounty.county.county,
+      },
+      {
+          name: 'Subcounty',
+          selector: row => row.village.parish.subcounty.subcounty,
+      },
+      {
+          name: 'Parish',
+          selector: row => row.village.parish.parish,
+      },
+      {
+          name: 'Village',
+          selector: row => row.village.village,
+      },
+      ,
+      {
+          name: 'Registered On',
+          selector: row => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }),
+      },
+      ,
     ]
+    
 
 
     return (
@@ -163,21 +136,13 @@ function DashboardBiodataScreen() {
                                 value={search}
                                 onChange={handleSearch}
                                 className='md:w-full' />
-                            <span>
-                                <Button size='sm' color='success' type='submit' className='flex h-10 items-center'
-                                    onClick={() => handleOpen("xl")}
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mr-2 w-5 h-5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                    </svg>
-                                    Add
-                                </Button>
-                            </span>
+                            
+                            
                         </div>
                     </div>
                 }
                 columns={columns}
-                data={expenses}
+                data={people.data}
                 customStyles={customStyles}
                 pointerOnHover
                 onRowClicked={(row, event) => !children && ExpandableComponent ? null : editRow(row, event)}
@@ -185,8 +150,8 @@ function DashboardBiodataScreen() {
                 highlightOnHover
                 pagination
                 paginationServer
-                paginationTotalRows={expenses}
-                paginationPerPage={expenses}
+                 paginationTotalRows={people.total}
+          paginationPerPage={people.per_page}
                 onChangePage={handlePageChange}
                 paginationRowsPerPageOptions={[]}
 

@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
+    Route::get('/dashboard/home', [PersonController::class, 'home']);
     Route::get('/dashboard/districts', [DistrictController::class, 'index']);
     Route::post('/dashboard/district/post', [DistrictController::class, 'store']);
 
@@ -56,6 +57,10 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/dashboard/village', [VillageController::class, 'index']);
     Route::post('/dashboard/village/post', [VillageController::class, 'store']);
+
+    Route::get('/dashboard/biodata', [PersonController::class, 'getPeople']);
+    Route::get('/dashboard/codinators', [PersonController::class, 'getCodinators']);
+ 
     
     
     Route::get('/mylink', [PersonController::class, 'mylink']);
@@ -71,16 +76,8 @@ Route::get('/getvillages', [VillageController::class, 'villages']);
 
 
 
-
-
-Route::get('/dashboard/home', function () {
-    return Inertia::render('DashboardHomeScreen');
-});
 Route::get('/registration-success', function () {
     return Inertia::render('RegistrationSuccessScreen');
-});
-Route::get('/dashboard/biodata', function () {
-    return Inertia::render('DashboardBiodataScreen');
 });
 Route::get('/dashboard/groups', function () {
     return Inertia::render('DashoboardGroupScreen');
