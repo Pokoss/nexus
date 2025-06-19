@@ -1,0 +1,1 @@
+import{j as e}from"./app-G6v-BuNp.js";import t from"./Navbar-CBfQdLLF.js";import"./index-rCyCOgzL.js";function n(){return e.jsxs("div",{className:"",children:[e.jsx(t,{}),e.jsx("div",{className:"w-full flex justify-center mt-56 text-lg font-bold p-8 bg-blue-gray-500",children:"Access Denied Contact Admin"})]})}export{n as default};

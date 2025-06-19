@@ -1,231 +1,319 @@
-import React, { Fragment, useState } from 'react'
-import Layout from './Layouts/components/Layout'
-import DataTable from 'react-data-table-component'
-import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Select, Typography } from '@material-tailwind/react';
+import React, { useState, useEffect } from 'react';
+import Layout from './Layouts/components/Layout';
+import DataTable from 'react-data-table-component';
+import {
+    Button,
+    Dialog,
+    DialogBody,
+    DialogFooter,
+    DialogHeader,
+    Input,
+    Typography,
+} from '@material-tailwind/react';
 import { router, useForm } from '@inertiajs/react';
+import axios from 'axios';
+import Select from 'react-select'; // Using react-select instead of Material Tailwind
 
-
-function DashboardBiodataScreen({people}) {
+function DashboardBiodataScreen({ people, districts }) {
     const [search, setSearch] = useState('');
-    const { data, setData, processing, post, reset, errors } = useForm();
+    const [filters, setFilters] = useState({
+        district_id: '',
+        county_id: '',
+        subcounty_id: '',
+        parish_id: '',
+        village_id: '',
+    });
 
+    const [counties, setCounties] = useState([]);
+    const [subcounties, setSubcounties] = useState([]);
+    const [parishes, setParishes] = useState([]);
+    const [villages, setVillages] = useState([]);
 
-    const [page, setPage] = useState(1);
-    const fetchData = (page) => {
-        router.get(`/dashboard/accounting/expenses`, { page, search }, { preserveState: true });
+    const [loadingCounties, setLoadingCounties] = useState(false);
+    const [loadingSubcounties, setLoadingSubcounties] = useState(false);
+    const [loadingParishes, setLoadingParishes] = useState(false);
+    const [loadingVillages, setLoadingVillages] = useState(false);
+
+    const [page, setPage] = useState(people?.current_page || 1);
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+        fetchData(newPage);
     };
-    const handlePageChange = (page) => {
-        setPage(page);
-        fetchData(page)
-    };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-
-        // toast.success(data.name)
-
-        post('/dashboard/district/post', {
-            preserveScroll: true, preserveState: true,
-            onSuccess: () => {
-                //   toast.success('We have received you request, we shall contact you shortly')
-                reset();
-                setData({})
-                handleOpen();
-            }
+    const fetchData = (page = 1) => {
+        router.get(`/dashboard/biodata`, { ...filters, search, page }, {
+            preserveState: true,
+            preserveScroll: true,
         });
+    };
 
-    }
-
-    const handleSearch = e => {
+    const handleSearch = (e) => {
         e.preventDefault();
-        setSearch(e.target.value)
-        setPage(1)
-        var search = e.target.value
-        router.get(`/dashboard//hr/employee`, {
-            search, page: 1
-        }, {
-            preserveState: true, preserveScroll: true, onSuccess: () => {
-            }
+        setSearch(e.target.value);
+        setPage(1);
+        router.get(`/dashboard/biodata`, { ...filters, search: e.target.value, page: 1 }, {
+            preserveState: true,
+            preserveScroll: true,
         });
-    }
-
-    const [size, setSize] = useState(null);
-    const handleOpen = (value) => setSize(value);
-    const [sizeEdit, setSizeEdit] = useState(null);
-    const handleOpenEdit = (value) => setSizeEdit(value);
-
-    const customStyles = {
-        headRow: {
-            style: {
-                border: 'none',
-            },
-        },
-        headCells: {
-            style: {
-                color: '#997400',
-                fontSize: '14px',
-            },
-        },
-        rows: {
-            highlightOnHoverStyle: {
-                backgroundColor: 'rgb(230, 244, 244)',
-                borderBottomColor: '#FFFFFF',
-                outline: '1px solid #FFFFFF',
-            },
-        },
-        pagination: {
-            style: {
-                border: 'none',
-            },
-        },
     };
 
-    const columns = [
-      {
-          name: 'Full Name',
-          selector: row => row.name,
-      },
-      {
-          name: 'NIN',
-          selector: row => row.nin,
-      },
-      {
-          name: 'Phone',
-          selector: row => row.phone,
-      },
-      {
-          name: 'District',
-          selector: row => row.village.parish.subcounty.county.district.district,
-      },
-      {
-          name: 'County',
-          selector: row => row.village.parish.subcounty.county.county,
-      },
-      {
-          name: 'Subcounty',
-          selector: row => row.village.parish.subcounty.subcounty,
-      },
-      {
-          name: 'Parish',
-          selector: row => row.village.parish.parish,
-      },
-      {
-          name: 'Village',
-          selector: row => row.village.village,
-      },
-      ,
-      {
-          name: 'Registered On',
-          selector: row => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }),
-      },
-      ,
-    ]
-    
+    const fetchCounties = async (districtId) => {
+        setLoadingCounties(true);
+        try {
+            const response = await axios.get(`/getcounties?district=${districtId}`);
+            console.log("API Data:", response.data); // Verify structure
+            setCounties(response.data);
+        } catch (error) {
+            console.error("Error:", error);
+            setCounties([]);
+        } finally {
+            setLoadingCounties(false);
+        }
+    };
+    // Fetch subcounties when county changes
+    const fetchSubcounties = async (countyId) => {
+        if (!countyId) {
+            setSubcounties([]);
+            return;
+        }
+        setLoadingSubcounties(true);
+        try {
+            const response = await axios.get(`/getsubcounties?subcounty=${countyId}`);
+            setSubcounties(response.data);
+        } catch (error) {
+            console.error("Error:", error);
+            setSubcounties([]);
+        } finally {
+            setLoadingSubcounties(false);
+        }
+    };
+    // Fetch subcounties when county changes
+    const fetchParishes = async (subcountyId) => {
+        if (!subcountyId) {
+            setParishes([]);
+            return;
+        }
+        setLoadingParishes(true);
+        try {
+            const response = await axios.get(`/getparishes?parish=${subcountyId}`);
+            console.log("API Data:", response.data); // Verify structure
+            setParishes(response.data);
+        } catch (error) {
+            console.error("Error:", error);
+            setParishes([]);
+        } finally {
+            setLoadingParishes(false);
+        }
+    };
+    // Fetch villages when county changes
+    const fetchVillages = async (parishId) => {
+        if (!parishId) {
+            setVillages([]);
+            return;
+        }
+        setLoadingVillages(true);
 
+        try {
+            const response = await axios.get(`/getvillages?village=${parishId}`);
+            console.log("API Data:", response.data); // Verify structure
+            setVillages(response.data);
+        } catch (error) {
+            console.error("Error:", error);
+            setVillages([]);
+        } finally {
+            setLoadingVillages(false);
+        }
+    };
+
+    const formatOptions = (data, labelKey, valueKey = 'id') =>
+        data.map(item => ({
+            value: item[valueKey],
+            label: item[labelKey],
+        }));
+
+    const handleFilterChange = (selectedOption, actionMeta) => {
+        const { name } = actionMeta;
+        const value = selectedOption ? selectedOption.value : '';
+
+        // Reset depending on which field was changed
+        switch (name) {
+            case 'district_id':
+                setFilters(prev => ({
+                    ...prev,
+                    district_id: value,
+                    county_id: '',
+                    subcounty_id: '',
+                    parish_id: '',
+                    village_id: '',
+                }));
+                if (value) fetchCounties(value);
+                else {
+                    setCounties([]);
+                    setSubcounties([]);
+                    setParishes([]);
+                    setVillages([]);
+                }
+                break;
+
+            case 'county_id':
+                setFilters(prev => ({
+                    ...prev,
+                    county_id: value,
+                    subcounty_id: '',
+                    parish_id: '',
+                    village_id: '',
+                }));
+                if (value) fetchSubcounties(value);
+                else {
+                    setSubcounties([]);
+                    setParishes([]);
+                    setVillages([]);
+                }
+                break;
+
+            case 'subcounty_id':
+                setFilters(prev => ({
+                    ...prev,
+                    subcounty_id: value,
+                    parish_id: '',
+                    village_id: '',
+                }));
+                if (value) fetchParishes(value);
+                else {
+                    setParishes([]);
+                    setVillages([]);
+                }
+                break;
+
+            case 'parish_id':
+                setFilters(prev => ({
+                    ...prev,
+                    parish_id: value,
+                    village_id: '',
+                }));
+                if (value) fetchVillages(value);
+                else {
+                    setVillages([]);
+                }
+                break;
+
+            case 'village_id':
+                setFilters(prev => ({ ...prev, village_id: value }));
+                break;
+
+            default:
+                break;
+        }
+
+        // Trigger filter request
+        router.get(`/dashboard/biodata`, { ...filters, [name]: value, page: 1 }, {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    };
+    const columns = [
+        { name: 'Full Name', selector: row => row.name },
+        { name: 'NIN', selector: row => row.nin },
+        { name: 'Phone', selector: row => row.phone },
+        { name: 'District', selector: row => row.village?.parish?.subcounty?.county?.district?.district },
+        { name: 'County', selector: row => row.village?.parish?.subcounty?.county?.county },
+        { name: 'Subcounty', selector: row => row.village?.parish?.subcounty?.subcounty },
+        { name: 'Parish', selector: row => row.village?.parish?.parish },
+        { name: 'Village', selector: row => row.village?.village },
+        { name: 'Registered On', selector: row => new Date(row.created_at).toLocaleDateString() },
+    ];
 
     return (
         <Layout>
-            <DataTable
-                title={'Person Bio Data' &&
-                    <div className='flex flex-col md:flex-row space-x-0 md:space-x-5 space-y-5 md:space-y-0 whitespace-nowrap items-start md:items-center justify-between w-full border-b-2 border-primary pb-3 pt-2'>
-                        <span>{'Person Bio Data'}</span>
-                        <div className='flex space-x-3 items-center md:space-x-5 w-full md:w-1/2 md:justify-end print:hidden'>
+            <div className='p-4'>
+                <DataTable
+                    title={
+                        <div className="p-2 flex flex-col md:flex-row justify-between items-start md:items-center w-full border-b pb-3 mb-4 gap-4">
+                            <span>Person Bio Data</span>
 
-                            <Input type='text' label='Search'
-                                value={search}
-                                onChange={handleSearch}
-                                className='md:w-full' />
-                            
-                            
+                            <div className="w-full md:w-4/3 space-y-2">
+                                <Input label="Search Person" value={search} onChange={handleSearch}/>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1">
+                                    <Select
+                                        name="district_id"
+                                        value={formatOptions(districts, 'district').find(o => o.value === filters.district_id)}
+                                        onChange={handleFilterChange}
+                                        options={formatOptions(districts, 'district')}
+                                        placeholder="District"
+                                        isClearable
+                                        isLoading={false}
+                                        className="text-sm"
+                                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                        menuPortalTarget={document.body}
+
+                                    />
+                                    <Select
+                                        name="county_id"
+                                        value={formatOptions(counties, 'county').find(o => o.value === filters.county_id)}
+                                        onChange={handleFilterChange}
+                                        options={formatOptions(counties, 'county')}
+                                        placeholder="County"
+                                        isDisabled={!filters.district_id || loadingCounties}
+                                        isLoading={loadingCounties}
+                                        className="text-sm"
+                                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                        menuPortalTarget={document.body}
+                                    />
+                                    <Select
+                                        name="subcounty_id"
+                                        value={formatOptions(subcounties, 'subcounty').find(o => o.value === filters.subcounty_id)}
+                                        onChange={handleFilterChange}
+                                        options={formatOptions(subcounties, 'subcounty')}
+                                        placeholder="Subcounty"
+                                        isDisabled={!filters.county_id || loadingSubcounties}
+                                        isLoading={loadingSubcounties}
+                                        className="text-sm"
+                                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                        menuPortalTarget={document.body}
+                                    />
+                                    <Select
+                                        name="parish_id"
+                                        value={formatOptions(parishes, 'parish').find(o => o.value === filters.parish_id)}
+                                        onChange={handleFilterChange}
+                                        options={formatOptions(parishes, 'parish')}
+                                        placeholder="Parish"
+                                        isDisabled={!filters.subcounty_id || loadingParishes}
+                                        isLoading={loadingParishes}
+                                        className="text-sm"
+                                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                        menuPortalTarget={document.body}
+                                    />
+                                    <Select
+                                        name="village_id"
+                                        value={formatOptions(villages, 'village').find(o => o.value === filters.village_id)}
+                                        onChange={handleFilterChange}
+                                        options={formatOptions(villages, 'village')}
+                                        placeholder="Village"
+                                        isDisabled={!filters.parish_id || loadingVillages}
+                                        isLoading={loadingVillages}
+                                        className="text-sm"
+                                        styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                                        menuPortalTarget={document.body}
+                                    />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                }
-                columns={columns}
-                data={people.data}
-                customStyles={customStyles}
-                pointerOnHover
-                onRowClicked={(row, event) => !children && ExpandableComponent ? null : editRow(row, event)}
-                // progressPending={loading}
-                highlightOnHover
-                pagination
-                paginationServer
-                 paginationTotalRows={people.total}
-          paginationPerPage={people.per_page}
-                onChangePage={handlePageChange}
-                paginationRowsPerPageOptions={[]}
-
-
-            // expandOnRowClicked={expandOnRowClicked && ExpandableComponent}
-            // expandableRows={ExpandableComponent}
-            // expandableRowsComponent={ExpandableComponent}
-            // expandableRowExpanded={row=>true}
-            />
-
-            <Fragment>
-                <Dialog
-                    open={
-                        size === "xl"
                     }
-                    size={size}
-                    handler={handleOpen}
-                >
-                    <DialogHeader>
-                        <Typography variant="h5" color="blue-gray">
-                            Add a Person
-                        </Typography>
-                    </DialogHeader>
-
-                    <form
-                        onSubmit={handleSubmit}
-                    >
-                        <DialogBody divider className="grid place-items-center gap-4">
-                            {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-16 w-16 text-primary">
-                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
-                   </svg> */}
-
-                            <Input label='Name'
-                                value={data.subcounty ?? ''} onChange={e => setData('subcounty', e.target.value)} size='sm'
-                            />
-                            <Input label='Phone'
-                                value={data.subcounty ?? ''} onChange={e => setData('subcounty', e.target.value)} size='sm'
-                            />
-                            <Input label='District'
-                                value={data.subcounty ?? ''} onChange={e => setData('subcounty', e.target.value)} size='sm'
-                            />
-                            <Input label='Subcounty'
-                                value={data.subcounty ?? ''} onChange={e => setData('subcounty', e.target.value)} size='sm'
-                            />
-                            <Input label='Parish'
-                                value={data.subcounty ?? ''} onChange={e => setData('subcounty', e.target.value)} size='sm'
-                            />
-                            <Input label='Village'
-                                value={data.subcounty ?? ''} onChange={e => setData('subcounty', e.target.value)} size='sm'
-                            />
-
-                            
-
-
-                        </DialogBody>
-                        <DialogFooter className="space-x-2">
-                            <Button onClick={handleOpen} variant="gradient" color="blue-gray">
-                                Close
-                            </Button>
-
-
-                            <Button type='submit' className='bg-black'>
-                                Add
-                            </Button>
-
-
-                        </DialogFooter>
-                    </form>
-                </Dialog>
-
-            </Fragment>
+                    columns={columns}
+                    data={people.data}
+                    pagination
+                    paginationServer
+                    paginationTotalRows={people.total}
+                    paginationPerPage={people.per_page}
+                    onChangePage={handlePageChange}
+                    highlightOnHover
+                    pointerOnHover
+                />
+            </div>
         </Layout>
-
-    )
+    );
 }
 
-export default DashboardBiodataScreen
+export default DashboardBiodataScreen;

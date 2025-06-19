@@ -78,6 +78,42 @@ function DashboardHomeScreen({people,codinators,villages,districts}) {
             </div>
           </Link>
         </div>
+        <div className='w-full'>
+          <div className='py-2 px-5 font-semibold text-base text-gray-800 border-b-2 border-primary'>
+            Shortcuts
+          </div>
+          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 p-2'>
+        
+          
+            <Link href={`/dashboard/biodata`} className='w-full hover:shadow-lg hover:shadow-secondary bg-white rounded m-1 flex flex-col items-center space-y-3 py-3 border-b-4 border-transparent hover:border-tertiary cursor-pointer'>
+              <img src='/images/access/company.png' alt="" className='w-14' />
+              <span className='text-base'>Bio Data</span>
+            </Link>
+            <Link href={`/dashboard/codinators`} className='w-full hover:shadow-lg hover:shadow-secondary rounded m-1 flex flex-col items-center space-y-3 py-3 border-b-4 border-transparent hover:border-tertiary cursor-pointer'>
+              <img src='/images/access/community.png' alt="" className='w-14' />
+              <span className='text-base'>Codinators</span>
+            </Link>
+         
+        
+          
+          <Link href={`/dashboard/districts`} className='w-full hover:shadow-lg hover:shadow-secondary bg-white rounded m-1 flex flex-col items-center space-y-3 py-3 border-b-4 border-transparent hover:border-tertiary cursor-pointer'>
+            <img src='/images/access/todo.png' alt="" className='w-14' />
+            <span className='text-base'>Districts</span>
+          </Link>
+        
+       
+            
+            
+           
+            <Link href={`/dashboard/village`}  className='w-full hover:shadow-lg hover:shadow-secondary rounded m-1 flex flex-col items-center space-y-3 py-3 border-b-4 border-transparent hover:border-tertiary cursor-pointer'>
+              <img src='/images/access/department.png' alt="" className='w-14' />
+              <span className='text-base'>Villages</span>
+            </Link>
+
+
+
+          </div>
+        </div>
     </div>
     </div>
   )

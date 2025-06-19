@@ -68,18 +68,54 @@ class PersonController extends Controller
     }
 
     public function getPeople(Request $request){
+    $authorization = Auth::user()->level;
 
-        $authorization = Auth::user()->level;
-
-        if($authorization < 2){
-            return Inertia::render('RestrictedScreen');
-        }
-
-        $my_people = Person::with('village.parish.subcounty.county.district')->paginate(10);
-
-        return Inertia::render('DashboardBiodataScreen', ['people'=> $my_people]);
-
+    if($authorization < 2){
+        return Inertia::render('RestrictedScreen');
     }
+
+    // Initialize filters with default empty strings
+    $filters = [
+        'district_id' => $request->input('district_id', ''),
+        'county_id' => $request->input('county_id', ''),
+        'subcounty_id' => $request->input('subcounty_id', ''),
+        'parish_id' => $request->input('parish_id', ''),
+        'village_id' => $request->input('village_id', ''),
+        'search' => $request->input('search', ''),
+    ];
+
+    $query = Person::query()->with('village.parish.subcounty.county.district');
+
+    // Apply filters dynamically
+    if ($filters['district_id']) {
+        $query->where('district_id', $filters['district_id']);
+    }
+    if ($filters['county_id']) {
+        $query->where('county_id', $filters['county_id']);
+    }
+    if ($filters['subcounty_id']) {
+        $query->where('subcounty_id', $filters['subcounty_id']);
+    }
+    if ($filters['parish_id']) {
+        $query->where('parish_id', $filters['parish_id']);
+    }
+    if ($filters['village_id']) {
+        $query->where('village_id', $filters['village_id']);
+    }
+    if ($filters['search']) {
+        $query->where('name', 'like', "%{$filters['search']}%");
+    }
+
+    $my_people = $query->paginate(10);
+
+    $districts = District::all();
+
+    return Inertia::render('DashboardBiodataScreen', [
+        'people' => $my_people,
+        'filters' => $filters,
+        'districts' => $districts
+    ]);
+}
     public function getCodinators(Request $request){
 
         $authorization = Auth::user()->level;
@@ -113,13 +149,20 @@ class PersonController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:13',
+            'nin' => 'required',
+            'district' => 'required|string|max:13',
+            'county' => 'required|string|max:13',
+            'subcounty' => 'required|string|max:13',
+            'parish' => 'required|string|max:13',
+            'village' => 'required|string|max:13',
+            'user' => 'required|string|max:13',
             
         ]);
         
 
         $person = Person::create([
             'name' => $request->name,
-            'nin' => $request->nin,
+            'nin' => strtoupper($request->nin),
             'phone' => $request->phone,
             'district_id' => $request->district,
             'county_id' => $request->county,

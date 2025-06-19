@@ -7,6 +7,7 @@ import Select from 'react-select'
 import { useState } from 'react';
 import Navbar from './Components/Navbar'
 import Footer from '@/Components/Footer';
+import { toast, ToastContainer } from 'react-toastify';
 
 function CitizensRegistrationScreen({ districts, the_user }) {
 
@@ -108,22 +109,41 @@ function CitizensRegistrationScreen({ districts, the_user }) {
   };
 
   const handleSubmit = async (event) => {
+
     event.preventDefault();
-
+    if (data.district == null){
+      toast.error('District is required')
+    }
+    else if(data.county  == null){
+      toast.error('County is required')
+    }
+    else if(data.subcounty  == null){
+      toast.error('Subcounty is required')
+    }
+    else if(data.parish  == null){
+      toast.error('Parish is required')
+    }
+    else if(data.village  == null){
+      toast.error('Village is required')
+    }
     
+    else{
 
-    post('/join/post',{user:the_user}, {
-      preserveScroll: true, preserveState: true,
-      onSuccess: () => {
-        //   toast.success('We have received you request, we shall contact you shortly')
-        router.visit('/registation-success')
-        reset();
-        setData({})
-
-
+      try {
+        post('/join/post', { user: the_user }, {
+          preserveScroll: true, preserveState: true,
+          onSuccess: () => {
+            //   toast.success('We have received you request, we shall contact you shortly')
+            router.visit('/registation-success')
+            reset();
+            setData({})
+          }
+        })
+      } catch (error) {
+        toast.error(errors)
+  
       }
-    });
-
+    }
   }
 
   return (
@@ -146,20 +166,20 @@ function CitizensRegistrationScreen({ districts, the_user }) {
 
             <div className='w-full my-3' >
               <Input color='deep-orange' label='Full Name' size='md'
-              value={data.name ?? ''} onChange={e => setData('name', e.target.value)} 
+                value={data.name ?? ''} onChange={e => setData('name', e.target.value)} error={errors.name}
               />
             </div>
             <div className='w-full my-3' >
               <Input color='deep-orange' label='National Identification Number (NIN)' size='md'
-              // value={location} onChange={(event) => setLocation(event.target.value)} 
-              value={data.nin ?? ''} onChange={e => setData('nin', e.target.value)} 
+                // value={location} onChange={(event) => setLocation(event.target.value)} 
+                value={data.nin ?? ''} onChange={e => setData('nin', e.target.value)} error={errors.nin}
               />
             </div>
 
             <div className='w-full my-3' >
               <Input color='deep-orange' label='Contact' size='md'
-              // value={contact} onChange={(event) => setContact(event.target.value)} 
-              value={data.phone ?? ''} onChange={e => setData('phone', e.target.value)} 
+                // value={contact} onChange={(event) => setContact(event.target.value)} 
+                value={data.phone ?? ''} onChange={e => setData('phone', e.target.value)} error={errors.phone}
               />
             </div>
 
@@ -167,7 +187,7 @@ function CitizensRegistrationScreen({ districts, the_user }) {
               <label className="block text-sm font-medium text-gray-700 mb-1">District</label>
               <Select
                 options={districtOptions}
-                value={districtOptions.find(opt => opt.value === data.district)}
+                value={districtOptions.find(opt => opt.value === data.district)} error={errors.district}
                 onChange={(option) => {
                   setData('district', option?.value || '');
                   if (option) fetchCounties(option.value);
@@ -183,7 +203,7 @@ function CitizensRegistrationScreen({ districts, the_user }) {
               <label className="block text-sm font-medium text-gray-700 mb-1">County</label>
               <Select
                 options={countyOptions}
-                value={countyOptions.find(opt => opt.value === data.county)}
+                value={countyOptions.find(opt => opt.value === data.county)} error={errors.county}
                 onChange={(option) => {
                   setData('county', option?.value || '');
                   if (option) fetchSubcounties(option.value);
@@ -200,7 +220,7 @@ function CitizensRegistrationScreen({ districts, the_user }) {
               <label className="block text-sm font-medium mb-1">Subcounty</label>
               <Select
                 options={subcountiesOptions}
-                value={subcountiesOptions.find(opt => opt.value === data.subcounty)}
+                value={subcountiesOptions.find(opt => opt.value === data.subcounty)} error={errors.subcounty}
                 onChange={(option) => {
                   setData('subcounty', option?.value || '');
                   if (option) fetchParishes(option.value);
@@ -215,7 +235,7 @@ function CitizensRegistrationScreen({ districts, the_user }) {
               <label className="block text-sm font-medium mb-1">Parish</label>
               <Select
                 options={parishOptions}
-                value={parishOptions.find(opt => opt.value === data.parish)}
+                value={parishOptions.find(opt => opt.value === data.parish)}error={errors.parish}
                 onChange={(option) => {
                   setData('parish', option?.value || '');
                   if (option) fetchVillages(option.value);
@@ -230,7 +250,7 @@ function CitizensRegistrationScreen({ districts, the_user }) {
               <label className="block text-sm font-medium mb-1">Village</label>
               <Select
                 options={villageOptions}
-                value={villageOptions.find(opt => opt.value === data.village)}
+                value={villageOptions.find(opt => opt.value === data.village)} error={errors.village}
                 onChange={(option) => { setData('village', option?.value || ''); }}
                 isDisabled={!data.parish || loadingVillages}
                 placeholder={loadingVillages ? 'Loading...' : 'Select village'}
@@ -242,7 +262,7 @@ function CitizensRegistrationScreen({ districts, the_user }) {
           </form>
         </div>
       </section>
-      {/* <ToastContainer /> */}
+      <ToastContainer />
       <Footer />
     </div>
   )
