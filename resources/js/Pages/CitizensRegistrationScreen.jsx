@@ -12,7 +12,17 @@ import { toast, ToastContainer } from 'react-toastify';
 function CitizensRegistrationScreen({ districts, the_user }) {
 
   console.log(the_user)
-  const { data, setData, processing, post, reset, errors } = useForm();
+  const { data, setData, post, reset,errors } = useForm({
+    name: '',
+    nin: '',
+    phone: '',
+    district: '',
+    county: '',
+    subcounty: '',
+    parish: '',
+    village: '',
+    user: the_user?.id || null
+  });
   const [counties, setCounties] = useState([]);
   const [loadingCounties, setLoadingCounties] = useState(false);
   const [loadingSubCounties, setLoadingSubCounties] = useState(false);
@@ -111,26 +121,27 @@ function CitizensRegistrationScreen({ districts, the_user }) {
   const handleSubmit = async (event) => {
 
     event.preventDefault();
-    if (data.district == null){
+    if (data.district == null) {
       toast.error('District is required')
     }
-    else if(data.county  == null){
+    else if (data.county == null) {
       toast.error('County is required')
     }
-    else if(data.subcounty  == null){
+    else if (data.subcounty == null) {
       toast.error('Subcounty is required')
     }
-    else if(data.parish  == null){
+    else if (data.parish == null) {
       toast.error('Parish is required')
     }
-    else if(data.village  == null){
+    else if (data.village == null) {
       toast.error('Village is required')
     }
-    
-    else{
+
+    else {
 
       try {
-        post('/join/post', { user: the_user }, {
+
+        post('/join/post', {
           preserveScroll: true, preserveState: true,
           onSuccess: () => {
             //   toast.success('We have received you request, we shall contact you shortly')
@@ -140,8 +151,9 @@ function CitizensRegistrationScreen({ districts, the_user }) {
           }
         })
       } catch (error) {
-        toast.error(errors)
-  
+        console.error("Registration error:", error);
+        toast.error('An error occurred while registering the member. Please try again later.');
+
       }
     }
   }
@@ -235,7 +247,7 @@ function CitizensRegistrationScreen({ districts, the_user }) {
               <label className="block text-sm font-medium mb-1">Parish</label>
               <Select
                 options={parishOptions}
-                value={parishOptions.find(opt => opt.value === data.parish)}error={errors.parish}
+                value={parishOptions.find(opt => opt.value === data.parish)} error={errors.parish}
                 onChange={(option) => {
                   setData('parish', option?.value || '');
                   if (option) fetchVillages(option.value);

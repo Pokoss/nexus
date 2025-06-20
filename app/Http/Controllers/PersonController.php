@@ -9,6 +9,7 @@ use App\Models\Village;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class PersonController extends Controller
@@ -143,19 +144,19 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
-        //
 
-        // return Response($request->user);
-        $request->validate([
+        try {
+
+            $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:13',
+            'phone' => 'required|max:13',
             'nin' => 'required',
-            'district' => 'required|string|max:13',
-            'county' => 'required|string|max:13',
-            'subcounty' => 'required|string|max:13',
-            'parish' => 'required|string|max:13',
-            'village' => 'required|string|max:13',
-            'user' => 'required|string|max:13',
+            'district' => 'required',
+            'county' => 'required',
+            'subcounty' => 'required',
+            'parish' => 'required',
+            'village' => 'required',
+            'user' => 'required',
             
         ]);
         
@@ -171,6 +172,11 @@ class PersonController extends Controller
             'village_id' => $request->village,
             'registered_by' => $request->user,
         ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Error creating person: ' . $e->getMessage());
+        }
+        
 
     }
 
