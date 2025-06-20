@@ -25,7 +25,7 @@ class VillageController extends Controller
 
     $villages = $query->latest()->paginate(10);
 
-    $districts = District::orderBy('village', 'asc')->get();
+    $districts = District::orderBy('district', 'asc')->get();
 
     return Inertia::render('DashboardVillageScreen', [
         'districts' => $districts,
