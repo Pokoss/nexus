@@ -18,7 +18,7 @@ class CountyController extends Controller
         //
 
         $counties = County::with('district')->latest()->paginate(10);
-        $districts = District::latest()->get();
+        $districts = District::orderBy('district', 'asc')->get();
         return Inertia::render('DashboardCountyScreen', ['counties'=> $counties,'districts'=>$districts ]);
 
     }
@@ -26,7 +26,7 @@ class CountyController extends Controller
     {
         //
 
-        $counties = County::where('district_id', $request->district)->latest()->get();
+        $counties = County::where('district_id', $request->district)->orderBy('county', 'asc')->get();
         
         return Response( $counties );
 
@@ -47,7 +47,7 @@ class CountyController extends Controller
     {
         //
         $county = County::create([
-            'county' => $request->county,
+            'county' => strtoupper($request->county),
             'district_id' => $request->district,
         ]);
     }

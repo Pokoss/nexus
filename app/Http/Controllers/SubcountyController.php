@@ -15,7 +15,7 @@ class SubcountyController extends Controller
     public function index()
     {
         //
-        $districts = District::all();
+        $districts = District::orderBy('district', 'asc')->get();
         $subcounties = Subcounty::with('county.district')->paginate(10);
         return Inertia::render('DashboardSubcountyScreen', ['districts' => $districts, 'subcounties'=>$subcounties]);
     }
@@ -24,7 +24,7 @@ class SubcountyController extends Controller
     {
         //
 
-        $subcounties = Subcounty::where('county_id', $request->subcounty)->latest()->get();
+        $subcounties = Subcounty::where('county_id', $request->subcounty)->orderBy('subcounty', 'asc')->get();
         
         return Response( $subcounties );
 
@@ -49,7 +49,7 @@ class SubcountyController extends Controller
         $subcounty = Subcounty::create([
             'district_id' => $request->district,
             'county_id' => $request->county,
-            'subcounty' => $request->subcounty,
+            'subcounty' => strtoupper($request->subcounty),
         ]);
     }
 

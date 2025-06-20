@@ -16,7 +16,7 @@ class ParishController extends Controller
     {
         //
 
-        $districts = District::all();
+        $districts = District::orderBy('district', 'asc')->get();
         $parishes = Parish::with('subcounty.county.district')->paginate(10);
         return Inertia::render('DashboardParishScreen', ['districts' => $districts, 'parishes'=>$parishes]);
     }
@@ -24,7 +24,7 @@ class ParishController extends Controller
     {
         //
 
-        $parishes = Parish::where('subcounty_id', $request->parish)->latest()->get();
+        $parishes = Parish::where('subcounty_id', $request->parish)->orderBy('parish', 'asc')->get();
         
         return Response( $parishes );
 
@@ -48,7 +48,7 @@ class ParishController extends Controller
             'district_id' => $request->district,
             'county_id' => $request->county,
             'subcounty_id' => $request->subcounty,
-            'parish' => $request->parish,
+            'parish' => strtoupper($request->parish),
         ]);
     }
 

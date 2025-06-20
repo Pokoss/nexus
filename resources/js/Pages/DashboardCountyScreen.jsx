@@ -1,8 +1,9 @@
 import React, { Fragment, useState } from 'react'
 import Layout from './Layouts/components/Layout'
 import DataTable from 'react-data-table-component'
-import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Option, Select, Typography } from '@material-tailwind/react'
+import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Option, Typography } from '@material-tailwind/react'
 import { router, useForm } from '@inertiajs/react'
+import Select from 'react-select'
 
 function DashboardCountyScreen({ districts, counties }) {
     console.log(counties)
@@ -50,6 +51,10 @@ function DashboardCountyScreen({ districts, counties }) {
         });
 
     }
+     const districtOptions = districts.map(d => ({
+        value: d.id,
+        label: d.district
+    }));
 
     const [size, setSize] = useState(null);
     const handleOpen = (value) => setSize(value);
@@ -189,15 +194,28 @@ function DashboardCountyScreen({ districts, counties }) {
 
 
 
+ 
+                                    <label className="text-start w-full block text-sm font-medium text-gray-700">District</label>
+                                    <Select
+                                        options={districtOptions}
+                                        value={districtOptions.find(opt => opt.value === data.district)}
+                                        onChange={(option) => {
+                                            setData('district', option?.value || '');
+                                            // if (option) fetchCounties(option.value);
+                                        }}
+                                        placeholder="Select district..."
+                                        className="text-sm w-full"
+                                    />
+                            
 
-                            <Select label='District' value={data.district} onChange={e => setData('district', e)} className='w-full' title='District'>
+                            {/* <Select label='District' value={data.district} onChange={e => setData('district', e)} className='w-full' title='District'>
 
 
                                 {districts.map((district) =>
                                     <Option value={district.id}>{district.district}</Option>
                                 )}
 
-                            </Select>
+                            </Select> */}
                             <Input label='County'
                                 value={data.county ?? ''} onChange={e => setData('county', e.target.value)} size='sm'
                             />

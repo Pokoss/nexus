@@ -36,7 +36,7 @@ class DistrictController extends Controller
         //
 
         $district = District::create([
-            'district' => $request->district
+            'district' => strtoupper($request->district)
         ]);
     }
 

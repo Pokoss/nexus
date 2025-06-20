@@ -25,7 +25,7 @@ class VillageController extends Controller
 
     $villages = $query->paginate(10);
 
-    $districts = District::all();
+    $districts = District::orderBy('name', 'asc')->get();
 
     return Inertia::render('DashboardVillageScreen', [
         'districts' => $districts,
@@ -37,7 +37,7 @@ class VillageController extends Controller
     {
         //
 
-        $parishes = Village::where('parish_id', $request->village)->latest()->get();
+        $parishes = Village::where('parish_id', $request->village)->orderBy('village', 'asc')->get();
         
         return Response( $parishes );
 
@@ -62,7 +62,7 @@ class VillageController extends Controller
             'county_id' => $request->county,
             'subcounty_id' => $request->subcounty,
             'parish_id' => $request->parish,
-            'village' => $request->village,
+            'village' => strtoupper($request->village),
         ]);
     }
 

@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
         $name_slug = Str::slug($thename, '-');
 
         $user = User::create([
-            'name' => $request->name,
+            'name' => strtoupper($request->name),
             'email' => $request->email,
             'nin' => strtoupper($request->nin),
             'phone' => $request->phone,

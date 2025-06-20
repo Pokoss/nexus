@@ -175,7 +175,7 @@ class PersonController extends Controller
 
 
             $person = Person::create([
-                'name' => $request->name,
+                'name' => strtoupper($request->name),
                 'nin' => strtoupper($request->nin),
                 'phone' => $request->phone,
                 'district_id' => $request->district,
