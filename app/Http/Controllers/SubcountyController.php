@@ -16,7 +16,7 @@ class SubcountyController extends Controller
     {
         //
         $districts = District::orderBy('district', 'asc')->get();
-        $subcounties = Subcounty::with('county.district')->paginate(10);
+        $subcounties = Subcounty::with('county.district')->latest()->paginate(10);
         return Inertia::render('DashboardSubcountyScreen', ['districts' => $districts, 'subcounties'=>$subcounties]);
     }
 

@@ -23,7 +23,7 @@ class VillageController extends Controller
         $query->where('village', 'like', "%{$search}%");
     }
 
-    $villages = $query->paginate(10);
+    $villages = $query->latest()->paginate(10);
 
     $districts = District::orderBy('name', 'asc')->get();
 
