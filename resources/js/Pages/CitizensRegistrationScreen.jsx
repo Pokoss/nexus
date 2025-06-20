@@ -12,7 +12,7 @@ import { toast, ToastContainer } from 'react-toastify';
 function CitizensRegistrationScreen({ districts, the_user }) {
 
   console.log(the_user)
-  const { data, setData, post, reset,errors } = useForm({
+  const { data, setData, post, reset, errors } = useForm({
     name: '',
     nin: '',
     phone: '',
@@ -117,6 +117,16 @@ function CitizensRegistrationScreen({ districts, the_user }) {
       setLoadingVillages(false);
     }
   };
+  const isValidNIN = (nin) => {
+  const formattedNIN = nin.toUpperCase();
+  // 2 uppercase letters + 9 digits + 3 uppercase letters or digits (ending in a letter)
+  const ninRegex = /^[A-Z]{2}\d{9}[A-Z0-9]{2}[A-Z]$/;
+  return formattedNIN.length === 14 && ninRegex.test(formattedNIN);
+  };
+  const isValidPhoneNumber = (phone) => {
+        const phoneRegex = /^07\d{8}$/;
+        return phoneRegex.test(phone);
+    };
 
   const handleSubmit = async (event) => {
 
@@ -136,11 +146,14 @@ function CitizensRegistrationScreen({ districts, the_user }) {
     else if (data.village == null) {
       toast.error('Village is required')
     }
-
+    else if (!isValidNIN(data.nin)) {
+      toast.error('Invalid NIN format. Please enter a valid NIN in the format XX12345678X12X.');
+    }
+    else if (!isValidPhoneNumber(data.phone)) {
+            toast.error('Invalid phone number. Enter the format 07XXXXXXXX.');
+        }
     else {
-
       try {
-
         post('/join/post', {
           preserveScroll: true, preserveState: true,
           onSuccess: () => {
@@ -153,7 +166,6 @@ function CitizensRegistrationScreen({ districts, the_user }) {
       } catch (error) {
         console.error("Registration error:", error);
         toast.error('An error occurred while registering the member. Please try again later.');
-
       }
     }
   }

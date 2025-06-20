@@ -226,7 +226,7 @@ function DashboardBiodataScreen({ people, districts }) {
 
     return (
         <Layout>
-            <div className='p-4'>
+            <div className='p-2'>
                 <DataTable
                     title={
                         <div className="p-2 flex flex-col md:flex-row justify-between items-start md:items-center w-full border-b pb-3 mb-4 gap-4">
