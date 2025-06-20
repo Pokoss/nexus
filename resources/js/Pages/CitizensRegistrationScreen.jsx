@@ -145,7 +145,7 @@ function CitizensRegistrationScreen({ districts, the_user }) {
           preserveScroll: true, preserveState: true,
           onSuccess: () => {
             //   toast.success('We have received you request, we shall contact you shortly')
-            router.visit('/registation-success')
+            router.visit('/registration-success')
             reset();
             setData({})
           }

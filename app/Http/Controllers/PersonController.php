@@ -107,7 +107,7 @@ class PersonController extends Controller
         $query->where('name', 'like', "%{$filters['search']}%");
     }
 
-    $my_people = $query->paginate(10);
+    $my_people = $query->paginate(1);
 
     $districts = District::all();
 

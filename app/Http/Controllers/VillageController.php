@@ -12,13 +12,27 @@ class VillageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-        $districts = District::all();
-        $villages = Village::with('parish.subcounty.county.district')->paginate(10);
-        return Inertia::render('DashboardVillageScreen', ['districts' => $districts, 'villages'=>$villages]);
+    public function index(Request $request)
+{
+    $search = $request->input('search');
+
+    // Query villages with relationship and optional search
+    $query = Village::with('parish.subcounty.county.district');
+
+    if ($search) {
+        $query->where('village', 'like', "%{$search}%");
     }
+
+    $villages = $query->paginate(10);
+
+    $districts = District::all();
+
+    return Inertia::render('DashboardVillageScreen', [
+        'districts' => $districts,
+        'villages' => $villages,
+        'filters' => $request->only(['search'])
+    ]);
+}
     public function villages(Request $request)
     {
         //
