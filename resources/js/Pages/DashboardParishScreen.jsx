@@ -7,6 +7,7 @@ import { Fragment } from 'react';
 import Select from 'react-select'
 import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function DashboardParishScreen({ parishes, districts }) {
     const { data, setData, processing, post, reset, errors } = useForm();
@@ -147,6 +148,7 @@ function DashboardParishScreen({ parishes, districts }) {
             preserveScroll: true, preserveState: true,
             onSuccess: () => {
                 setIsSubmitting(false);
+                toast.success('Parish added successfully');
                 //   toast.success('We have received you request, we shall contact you shortly')
                 reset();
                 setData({})

@@ -3,6 +3,7 @@ import Layout from './Layouts/components/Layout'
 import DataTable from 'react-data-table-component';
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Typography } from '@material-tailwind/react';
 import { router, useForm } from '@inertiajs/react';
+import { toast } from 'react-toastify';
 
 function DashboardDistrictScreen({districts}) {
     const { data, setData, processing, post, reset, errors } = useForm();
@@ -39,6 +40,7 @@ function DashboardDistrictScreen({districts}) {
         post('/dashboard/district/post', {
             preserveScroll: true, preserveState: true,
             onSuccess: () => {
+                toast.success('District added successfully');
                 //   toast.success('We have received you request, we shall contact you shortly')
                 reset();
                 setData({})

@@ -76,44 +76,77 @@ function HomeScreen() {
             
 
             <div class="w-full max-w-xs text-center">
-              <img class="object-contain object-center w-full h-48 mx-auto rounded-lg" src="/images/team/hood.jpg" alt="avatar" />
+              <img class="object-cover w-full h-48 mx-auto rounded-lg" src="/images/team/hood.jpg" alt="avatar" />
 
               <div class="mt-2">
-                <h3 class="text-lg font-medium text-gray-700 ">Hood Kayanja Sentale</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Chairman</span>
+                <h3 class="text-lg font-medium text-gray-700 ">Hood Sentale K</h3>
+                <span class="mt-1 font-medium text-gray-600 ">Cheif Codinator</span>
               </div>
             </div>
 
             <div class="w-full max-w-xs text-center">
-              <img class="object-cover object-top w-full h-48 mx-auto rounded-lg" src="/images/team/daniel.jpg" alt="opoka" />
+              <img class="object-cover w-full h-48 mx-auto rounded-lg" src="/images/team/dan.jpg" alt="opoka" />
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Opoka Daniel</h3>
                 <span class="mt-1 font-medium text-gray-600 ">C.T.O</span>
               </div>
             </div>
-            <div class="w-full max-w-xs text-center">
+            {/* <div class="w-full max-w-xs text-center">
               <img class="object-contain w-full h-48 mx-auto rounded-lg" src="/images/team/timothy.jpg" alt="avatar" />
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Ocheng Timothy</h3>
                 <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
               </div>
-            </div>
-
-            <div class="w-full max-w-xs text-center">
-              <img class="object-contain object-top w-full h-48 mx-auto rounded-lg" src="/images/team/joseph.jpg" alt="Joseph" />
-
-              <div class="mt-2">
-                <h3 class="text-lg font-medium text-gray-700 ">Kunikina Joseph Napututaliu</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Editor</span>
-              </div>
-            </div>
+            </div> */}
             <div class="w-full max-w-xs text-center">
               <img class="object-cover object-top w-full h-48 mx-auto rounded-lg" src="/images/team/roy.jpg" alt="Joseph" />
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Rugumayo Roy</h3>
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+              </div>
+            </div>
+
+            <div class="w-full max-w-xs text-center">
+              <img class="object-cover object-top w-full h-48 mx-auto rounded-lg" src="/images/team/shafiq.jpg" alt="Shafiq" />
+
+              <div class="mt-2">
+                <h3 class="text-lg font-medium text-gray-700 ">Kiyimba Shafiq</h3>
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+              </div>
+            </div>
+            <div class="w-full max-w-xs text-center">
+              <img class="object-contain object-top w-full h-48 mx-auto rounded-lg" src="/images/team/joseph.jpg" alt="Joseph" />
+
+              <div class="mt-2">
+                <h3 class="text-lg font-medium text-gray-700 ">Kunikina Joseph Napututaliu</h3>
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+              </div>
+            </div>
+            
+            <div class="w-full max-w-xs text-center">
+              <img class="object-cover object-top w-full h-48 mx-auto rounded-lg" src="/images/team/mary.jpg" alt="Joseph" />
+
+              <div class="mt-2">
+                <h3 class="text-lg font-medium text-gray-700 ">Nakeyune Mary</h3>
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+              </div>
+            </div>
+            <div class="w-full max-w-xs text-center">
+              <img class="object-cover object-top w-full h-48 mx-auto rounded-lg" src="/images/team/rasta.jpg" alt="Joseph" />
+
+              <div class="mt-2">
+                <h3 class="text-lg font-medium text-gray-700 ">Kaweesi Roy Keith</h3>
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+              </div>
+            </div>
+            <div class="w-full max-w-xs text-center">
+              <img class="object-cover w-full h-48 mx-auto rounded-lg" src="/images/team/angel.jpg" alt="Joseph" />
+
+              <div class="mt-2">
+                <h3 class="text-lg font-medium text-gray-700 ">Nakake Angel</h3>
                 <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
               </div>
             </div>

@@ -122,6 +122,7 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
         post('/dashboard/subcounty/post', {
             preserveScroll: true, preserveState: true,
             onSuccess: () => {
+                toast.success('Subcounty added successfully');
                 //   toast.success('We have received you request, we shall contact you shortly')
                 reset();
                 setData({})

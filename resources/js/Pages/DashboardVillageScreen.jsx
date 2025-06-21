@@ -14,6 +14,7 @@ import {
 import Select from 'react-select';
 import Layout from './Layouts/components/Layout';
 import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function DashboardVillageScreen({ villages, districts }) {
   const { data, setData, post, reset } = useForm();
@@ -141,6 +142,7 @@ export default function DashboardVillageScreen({ villages, districts }) {
       },
       onFinish: () => {
         setIsSubmitting(false); // Re-enable the button
+        toast.success('Village added successfully');
       },
     });
   };

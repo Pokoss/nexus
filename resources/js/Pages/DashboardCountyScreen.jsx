@@ -95,6 +95,7 @@ function DashboardCountyScreen({ districts, counties }) {
             preserveScroll: true, preserveState: true,
             onSuccess: () => {
                 setIsSubmitting(false);
+                toast.success('County added successfully');
                 //   toast.success('We have received you request, we shall contact you shortly')
                 reset();
                 setData({})
