@@ -11,11 +11,20 @@ class DistrictController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+
+        $search = $request->get("search");
+         $query = District::query();
+        if ($search) {
+            $query->where('district', 'like', "%{$search}%");
+        }
+        $districts = $query->latest()->paginate(10);
+
+        // $districts = District::where("district","LIKE", "%". $search ."%")
         
-        $districts = District::with('counties')->latest()->paginate(10);
+        // $districts = District::with('counties')->latest()->paginate(10);
         return Inertia::render('DashboardDistrictScreen', ['districts'=> $districts ]);
 
     }

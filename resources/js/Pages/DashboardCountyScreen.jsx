@@ -1,15 +1,18 @@
 import React, { Fragment, useState } from 'react'
 import Layout from './Layouts/components/Layout'
 import DataTable from 'react-data-table-component'
-import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Option, Typography } from '@material-tailwind/react'
+import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Option, Spinner, Typography } from '@material-tailwind/react'
 import { router, useForm } from '@inertiajs/react'
 import Select from 'react-select'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 function DashboardCountyScreen({ districts, counties }) {
     console.log(counties)
 
 
     const [district, setDistrict] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
 
     const { data, setData, processing, post, reset, errors } = useForm();
@@ -29,7 +32,7 @@ function DashboardCountyScreen({ districts, counties }) {
         setSearch(e.target.value)
         setPage(1)
         var search = e.target.value
-        router.get(`/dashboard//hr/employee`, {
+        router.get(`/dashboard/county`, {
             search, page: 1
         }, {
             preserveState: true, preserveScroll: true, onSuccess: () => {
@@ -37,12 +40,61 @@ function DashboardCountyScreen({ districts, counties }) {
         });
     }
 
+    const postDelete = (event) => {
+        event.preventDefault();
+
+        try {
+            router.post('/dashboard/county/delete', { county_id: editId },
+                {
+                    onSuccess: () => {
+                        toast.success('Product deleted');
+                        handleOpenEdit()
+                        // setSelectedOption(useState(null));
+                    }
+                }
+            )
+        } catch (error) {
+            toast.dismiss()
+            toast.error(error);
+        }
+
+
+    }
+
+    const postEdit = (event) => {
+        event.preventDefault();
+        toast.loading();
+        if (editCounty == '') {
+            toast.dismiss()
+        }
+        else {
+            try {
+
+                router.post('/dashboard/county/edit', { county: editCounty, id: editId },
+                    {
+                        onSuccess: () => {
+                            toast.success('Product edited successfully');
+                            handleOpenEdit();
+                        }
+                    }
+                )
+            } catch (error) {
+                toast.dismiss()
+                toast.error(error);
+            }
+        }
+
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (isSubmitting) return; // Prevent multiple submissions
+        setIsSubmitting(true);
 
         post('/dashboard/county/post', {
             preserveScroll: true, preserveState: true,
             onSuccess: () => {
+                setIsSubmitting(false);
                 //   toast.success('We have received you request, we shall contact you shortly')
                 reset();
                 setData({})
@@ -51,7 +103,7 @@ function DashboardCountyScreen({ districts, counties }) {
         });
 
     }
-     const districtOptions = districts.map(d => ({
+    const districtOptions = districts.map(d => ({
         value: d.id,
         label: d.district
     }));
@@ -64,14 +116,16 @@ function DashboardCountyScreen({ districts, counties }) {
 
     const [editCounty, setEditCounty] = useState('');
     const [editDistrict, setEditDistrict] = useState('');
+    const [editId, setEditId] = useState('');
 
-    function editTheCounty(county, district) {
+    function editTheCounty(county, district, id) {
         handleOpenEdit("xl")
 
 
 
         setEditCounty(county);
         setEditDistrict(district);
+        setEditId(id);
     }
 
 
@@ -158,8 +212,8 @@ function DashboardCountyScreen({ districts, counties }) {
                 highlightOnHover
                 pagination
                 paginationServer
-                paginationTotalRows={''}
-                paginationPerPage={''}
+                paginationTotalRows={counties.total}
+                paginationPerPage={counties.per_page}
                 onChangePage={handlePageChange}
                 paginationRowsPerPageOptions={[]}
 
@@ -194,19 +248,19 @@ function DashboardCountyScreen({ districts, counties }) {
 
 
 
- 
-                                    <label className="text-start w-full block text-sm font-medium text-gray-700">District</label>
-                                    <Select
-                                        options={districtOptions}
-                                        value={districtOptions.find(opt => opt.value === data.district)}
-                                        onChange={(option) => {
-                                            setData('district', option?.value || '');
-                                            // if (option) fetchCounties(option.value);
-                                        }}
-                                        placeholder="Select district..."
-                                        className="text-sm w-full"
-                                    />
-                            
+
+                            <label className="text-start w-full block text-sm font-medium text-gray-700">District</label>
+                            <Select
+                                options={districtOptions}
+                                value={districtOptions.find(opt => opt.value === data.district)}
+                                onChange={(option) => {
+                                    setData('district', option?.value || '');
+                                    // if (option) fetchCounties(option.value);
+                                }}
+                                placeholder="Select district..."
+                                className="text-sm w-full"
+                            />
+
 
                             {/* <Select label='District' value={data.district} onChange={e => setData('district', e)} className='w-full' title='District'>
 
@@ -227,8 +281,12 @@ function DashboardCountyScreen({ districts, counties }) {
                             </Button>
 
 
-                            <Button type='submit' className='bg-black'>
-                                Add
+                            <Button
+                                type="submit"
+                                className="bg-black"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? <Spinner size="sm" /> : 'Save'}
                             </Button>
 
 
@@ -237,7 +295,7 @@ function DashboardCountyScreen({ districts, counties }) {
                 </Dialog>
 
             </Fragment>
-            <Fragment>
+            <Fragment >
                 <Dialog
                     open={
                         sizeEdit === "xl"
@@ -251,7 +309,7 @@ function DashboardCountyScreen({ districts, counties }) {
                         </Typography>
                     </DialogHeader>
                     <form
-                    // onSubmit={postEdit}
+                        onSubmit={postEdit}
                     >
                         <DialogBody divider className="grid place-items-center gap-4">
 
@@ -269,7 +327,7 @@ function DashboardCountyScreen({ districts, counties }) {
                         <DialogFooter>
                             <div className='flex w-full justify-between'>
                                 <Button
-                                    // onClick={postDelete} 
+                                    onClick={postDelete}
                                     variant="gradient" color="red">
                                     Delete
                                 </Button>
@@ -286,6 +344,7 @@ function DashboardCountyScreen({ districts, counties }) {
                     </form>
                 </Dialog>
             </Fragment>
+            <ToastContainer />
         </div>
 
 

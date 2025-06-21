@@ -44,19 +44,28 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/home', [PersonController::class, 'home']);
     Route::get('/dashboard/districts', [DistrictController::class, 'index']);
     Route::post('/dashboard/district/post', [DistrictController::class, 'store']);
+    Route::post('/dashboard/district/edit', [DistrictController::class, 'edit']);
 
     Route::get('/dashboard/county', [CountyController::class, 'index']);
     Route::post('/dashboard/county/post', [CountyController::class, 'store']);
+    Route::post('/dashboard/county/edit', [CountyController::class, 'edit']);
+    Route::post('/dashboard/county/delete', [CountyController::class, 'destroy']);
     
     Route::get('/dashboard/subcounty', [SubcountyController::class, 'index']);
     Route::post('/dashboard/subcounty/post', [SubcountyController::class, 'store']);
+    Route::post('/dashboard/subcounty/edit', [SubcountyController::class, 'edit']);
+    Route::post('/dashboard/subcounty/delete', [SubcountyController::class, 'destroy']);
     
     Route::get('/dashboard/parish', [ParishController::class, 'index']);
     Route::post('/dashboard/parish/post', [ParishController::class, 'store']);
+    Route::post('/dashboard/parish/edit', [ParishController::class, 'edit']);
+    Route::post('/dashboard/parish/delete', [ParishController::class, 'destroy']);
     
     
     Route::get('/dashboard/village', [VillageController::class, 'index']);
     Route::post('/dashboard/village/post', [VillageController::class, 'store']);
+    Route::post('/dashboard/village/edit', [VillageController::class, 'edit']);
+    Route::post('/dashboard/village/delete', [VillageController::class, 'destroy']);
 
     Route::get('/dashboard/biodata', [PersonController::class, 'getPeople']);
     Route::get('/dashboard/codinators', [PersonController::class, 'getCodinators']);

@@ -8,10 +8,12 @@ import {
   DialogFooter,
   DialogHeader,
   Input,
+  Spinner,
   Typography,
 } from '@material-tailwind/react';
 import Select from 'react-select';
 import Layout from './Layouts/components/Layout';
+import { toast, ToastContainer } from 'react-toastify';
 
 export default function DashboardVillageScreen({ villages, districts }) {
   const { data, setData, post, reset } = useForm();
@@ -31,6 +33,7 @@ export default function DashboardVillageScreen({ villages, districts }) {
   const handleOpen = (value) => setSize(value);
   const [sizeEdit, setSizeEdit] = useState(null);
   const handleOpenEdit = (value) => setSizeEdit(value);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Edit state
   const [editVillage, setEditVillage] = useState('');
@@ -38,6 +41,7 @@ export default function DashboardVillageScreen({ villages, districts }) {
   const [editSubcounty, setEditSubcounty] = useState('');
   const [editCounty, setEditCounty] = useState('');
   const [editDistrict, setEditDistrict] = useState('');
+  const [editId, setEditId] = useState('');
 
   // Format options for react-select
   const districtOptions = districts.map((d) => ({
@@ -65,47 +69,47 @@ export default function DashboardVillageScreen({ villages, districts }) {
     router.get('/dashboard/village', { search, page: newPage }, { preserveState: true });
   };
 
-        const fetchCounties = async (districtId) => {
-            setLoadingCounties(true);
-            try {
-                const response = await axios.get(`/getcounties?district=${districtId}`);
-                console.log("API Data:", response.data); // Verify structure
-                setCounties(response.data);
-            } catch (error) {
-                console.error("Error:", error);
-                setCounties([]);
-            } finally {
-                setLoadingCounties(false);
-            }
-        };
-        // Fetch subcounties when county changes
-        const fetchSubcounties = async (countyId) => {
-            setLoadingSubCounties(true);
-            try {
-                const response = await axios.get(`/getsubcounties?subcounty=${countyId}`);
-                console.log("API Data:", response.data); // Verify structure
-                setSubcounties(response.data);
-            } catch (error) {
-                console.error("Error:", error);
-                setSubcounties([]);
-            } finally {
-                setLoadingSubCounties(false);
-            }
-        };
-        // Fetch subcounties when county changes
-        const fetchParishes = async (subcountyId) => {
-            setLoadingParishes(true);
-            try {
-                const response = await axios.get(`/getparishes?parish=${subcountyId}`);
-                console.log("API Data:", response.data); // Verify structure
-                setParishes(response.data);
-            } catch (error) {
-                console.error("Error:", error);
-                setParishes([]);
-            } finally {
-                setLoadingParishes(false);
-            }
-        };
+  const fetchCounties = async (districtId) => {
+    setLoadingCounties(true);
+    try {
+      const response = await axios.get(`/getcounties?district=${districtId}`);
+      console.log("API Data:", response.data); // Verify structure
+      setCounties(response.data);
+    } catch (error) {
+      console.error("Error:", error);
+      setCounties([]);
+    } finally {
+      setLoadingCounties(false);
+    }
+  };
+  // Fetch subcounties when county changes
+  const fetchSubcounties = async (countyId) => {
+    setLoadingSubCounties(true);
+    try {
+      const response = await axios.get(`/getsubcounties?subcounty=${countyId}`);
+      console.log("API Data:", response.data); // Verify structure
+      setSubcounties(response.data);
+    } catch (error) {
+      console.error("Error:", error);
+      setSubcounties([]);
+    } finally {
+      setLoadingSubCounties(false);
+    }
+  };
+  // Fetch subcounties when county changes
+  const fetchParishes = async (subcountyId) => {
+    setLoadingParishes(true);
+    try {
+      const response = await axios.get(`/getparishes?parish=${subcountyId}`);
+      console.log("API Data:", response.data); // Verify structure
+      setParishes(response.data);
+    } catch (error) {
+      console.error("Error:", error);
+      setParishes([]);
+    } finally {
+      setLoadingParishes(false);
+    }
+  };
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -125,6 +129,8 @@ export default function DashboardVillageScreen({ villages, districts }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent multiple submissions
+    setIsSubmitting(true);
     post('/dashboard/village/post', {
       preserveScroll: true,
       preserveState: true,
@@ -133,15 +139,68 @@ export default function DashboardVillageScreen({ villages, districts }) {
         setData({});
         handleOpen(null);
       },
+      onFinish: () => {
+        setIsSubmitting(false); // Re-enable the button
+      },
     });
   };
 
-  const editTheVillage = (village, parish, subcounty, county, district) => {
+  const postEdit = (event) => {
+    event.preventDefault();
+    if (isSubmitting) return;
+    toast.loading();
+    if (editVillage == '') {
+      toast.dismiss()
+    }
+    else {
+      try {
+
+        router.post('/dashboard/village/edit', { village: editVillage, id: editId },
+          {
+            onSuccess: () => {
+              setIsSubmitting(false);
+              toast.success('Parish edited successfully');
+              handleOpenEdit();
+
+            }
+          }
+        )
+      } catch (error) {
+        toast.dismiss()
+        toast.error(error);
+      }
+    }
+  }
+
+  const postDelete = (event) => {
+    event.preventDefault();
+    if (isSubmitting) return;
+
+    try {
+      router.post('/dashboard/village/delete', { village_id: editId },
+        {
+          onSuccess: () => {
+            toast.success('Village deleted');
+            handleOpenEdit()
+            // setSelectedOption(useState(null));
+          }
+        }
+      )
+    } catch (error) {
+      toast.dismiss()
+      toast.error(error);
+    }
+
+
+  }
+
+  const editTheVillage = (village, parish, subcounty, county, district, id) => {
     setEditVillage(village);
     setEditParish(parish);
     setEditSubcounty(subcounty);
     setEditCounty(county);
     setEditDistrict(district);
+    setEditId(id);
     handleOpenEdit('xl');
   };
 
@@ -185,7 +244,8 @@ export default function DashboardVillageScreen({ villages, districts }) {
             row.parish?.parish || '',
             row.parish?.subcounty?.subcounty || '',
             row.parish?.subcounty?.county?.county || '',
-            row.parish?.subcounty?.county?.district?.district || ''
+            row.parish?.subcounty?.county?.district?.district || '',
+            row.id,
           )}
           className="bg-green-600 rounded-md p-1"
         >
@@ -283,115 +343,120 @@ export default function DashboardVillageScreen({ villages, districts }) {
 
       {/* Add Village Modal */}
       <Fragment>
-                <Dialog
-                    open={
-                        size === "xl"
-                    }
-                    size={size}
-                    handler={handleOpen}
-                >
-                    <DialogHeader>
-                        <Typography variant="h5" color="blue-gray">
-                            Add a Subcounty
-                        </Typography>
-                    </DialogHeader>
+        <Dialog
+          open={
+            size === "xl"
+          }
+          size={size}
+          handler={handleOpen}
+        >
+          <DialogHeader>
+            <Typography variant="h5" color="blue-gray">
+              Add a Subcounty
+            </Typography>
+          </DialogHeader>
 
-                    <form
-                        onSubmit={handleSubmit}
-                    >
-                        <DialogBody divider className="grid place-items-center gap-4">
-                            {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-16 w-16 text-primary">
+          <form
+            onSubmit={handleSubmit}
+          >
+            <DialogBody divider className="grid place-items-center gap-4">
+              {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-16 w-16 text-primary">
                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
                    </svg> */}
 
-                            <div className="space-y-4 w-full">
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">District</label>
-                                    <Select
-                                        options={districtOptions}
-                                        value={districtOptions.find(opt => opt.value === data.district)}
-                                        onChange={(option) => {
-                                            setData('district', option?.value || '');
-                                            if (option) fetchCounties(option.value);
-                                        }}
-                                        placeholder="Select district..."
-                                        className="text-sm"
-                                    />
-                                </div>
+              <div className="space-y-4 w-full">
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">District</label>
+                  <Select
+                    options={districtOptions}
+                    value={districtOptions.find(opt => opt.value === data.district)}
+                    onChange={(option) => {
+                      setData('district', option?.value || '');
+                      if (option) fetchCounties(option.value);
+                    }}
+                    placeholder="Select district..."
+                    className="text-sm"
+                  />
+                </div>
 
-                                {/* County Dropdown */}
-                               
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">County</label>
-                                    <Select
-                                        options={countyOptions}
-                                        value={countyOptions.find(opt => opt.value === data.county)}
-                                        onChange={(option) => {
-                                            setData('county', option?.value || '');
-                                            if (option) fetchSubcounties(option.value);
-                                        }}
-                                        // onChange={(option) => { setData('county', option?.value || ''); fetchSubcounties(e.value); }}
-                                        isDisabled={!data.district || loadingCounties}
-                                        placeholder={loadingCounties ? 'Loading...' : 'Select county...'}
-                                        className="text-sm"
-                                    />
-                                </div>
+                {/* County Dropdown */}
 
-                                {/* Subcounty Dropdown */}
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Subcounty</label>
-                                    <Select
-                                        options={subcountyOptions}
-                                        value={subcountyOptions.find(opt => opt.value === data.subcounty)}
-                                        onChange={(option) => {
-                                            setData('subcounty', option?.value || '');
-                                            if (option) fetchParishes(option.value);
-                                        }}
-                                        // onChange={(option) =>{ setData('subcounty', option?.value || '');   }}
-                                        isDisabled={!data.county || loadingSubCounties}
-                                        placeholder={loadingSubCounties ? 'Loading...' : 'Select subcounty'}
-                                        className="text-sm"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Parish</label>
-                                    <Select
-                                        options={parishOptions}
-                                        value={parishOptions.find(opt => opt.value === data.parish)}
-                                        onChange={(option) =>{ setData('parish', option?.value || '');   }}
-                                        isDisabled={!data.subcounty || loadingParishes}
-                                        placeholder={loadingParishes ? 'Loading...' : 'Select parish'}
-                                        className="text-sm"
-                                    />
-                                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">County</label>
+                  <Select
+                    options={countyOptions}
+                    value={countyOptions.find(opt => opt.value === data.county)}
+                    onChange={(option) => {
+                      setData('county', option?.value || '');
+                      if (option) fetchSubcounties(option.value);
+                    }}
+                    // onChange={(option) => { setData('county', option?.value || ''); fetchSubcounties(e.value); }}
+                    isDisabled={!data.district || loadingCounties}
+                    placeholder={loadingCounties ? 'Loading...' : 'Select county...'}
+                    className="text-sm"
+                  />
+                </div>
 
-                                <Input label='Village'
-                                    value={data.village ?? ''} onChange={e => setData('village', e.target.value)} size='sm'
-                                />
-                            </div>
-                        </DialogBody>
-                        <DialogFooter className="space-x-2">
-                            <Button onClick={handleOpen} variant="gradient" color="blue-gray">
-                                Close
-                            </Button>
+                {/* Subcounty Dropdown */}
+                <div>
+                  <label className="block text-sm font-medium mb-1">Subcounty</label>
+                  <Select
+                    options={subcountyOptions}
+                    value={subcountyOptions.find(opt => opt.value === data.subcounty)}
+                    onChange={(option) => {
+                      setData('subcounty', option?.value || '');
+                      if (option) fetchParishes(option.value);
+                    }}
+                    // onChange={(option) =>{ setData('subcounty', option?.value || '');   }}
+                    isDisabled={!data.county || loadingSubCounties}
+                    placeholder={loadingSubCounties ? 'Loading...' : 'Select subcounty'}
+                    className="text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Parish</label>
+                  <Select
+                    options={parishOptions}
+                    value={parishOptions.find(opt => opt.value === data.parish)}
+                    onChange={(option) => { setData('parish', option?.value || ''); }}
+                    isDisabled={!data.subcounty || loadingParishes}
+                    placeholder={loadingParishes ? 'Loading...' : 'Select parish'}
+                    className="text-sm"
+                  />
+                </div>
 
-
-                            <Button type='submit' className='bg-black'>
-                                Add
-                            </Button>
+                <Input label='Village'
+                  value={data.village ?? ''} onChange={e => setData('village', e.target.value)} size='sm'
+                />
+              </div>
+            </DialogBody>
+            <DialogFooter className="space-x-2">
+              <Button onClick={handleOpen} variant="gradient" color="blue-gray">
+                Close
+              </Button>
 
 
-                        </DialogFooter>
-                    </form>
-                </Dialog>
+              <Button
+                type="submit"
+                className="bg-black"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? <Spinner size="sm" /> : 'Save'}
+              </Button>
 
-            </Fragment>
+
+
+            </DialogFooter>
+          </form>
+        </Dialog>
+
+      </Fragment>
 
       {/* Edit Village Modal */}
       <Fragment>
         <Dialog open={sizeEdit === 'xl'} size={sizeEdit} handler={handleOpenEdit}>
           <DialogHeader>Edit Village</DialogHeader>
-          <form>
+          <form onSubmit={postEdit}>
             <DialogBody divider className="grid place-items-center gap-4">
               <Input label="District" disabled value={editDistrict} size="sm" />
               <Input label="County" disabled value={editCounty} size="sm" />
@@ -401,18 +466,25 @@ export default function DashboardVillageScreen({ villages, districts }) {
             </DialogBody>
             <DialogFooter>
               <div className="flex w-full justify-between">
-                <Button variant="gradient" color="red">Delete</Button>
+                <Button onClick={postDelete} variant="gradient" color="red">Delete</Button>
                 <div className="space-x-2">
                   <Button onClick={() => handleOpenEdit(null)} variant="gradient" color="blue-gray">
                     Close
                   </Button>
-                  <Button type="submit" className="bg-black">Save</Button>
+                  <Button
+                    type="submit"
+                    className="bg-black"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? <Spinner size="sm" /> : 'Save'}
+                  </Button>
                 </div>
               </div>
             </DialogFooter>
           </form>
         </Dialog>
       </Fragment>
+      <ToastContainer />
     </div>
   );
 }

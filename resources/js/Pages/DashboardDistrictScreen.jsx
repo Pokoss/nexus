@@ -10,7 +10,7 @@ function DashboardDistrictScreen({districts}) {
     const [page, setPage] = useState(1);
     console.log(districts)
     const fetchData = (page) => {
-        router.get(`/dashboard/accounting/expenses`, { page, search }, { preserveState: true });
+        router.get(`/dashboard/districts`, { page, search }, { preserveState: true });
     };
     const handlePageChange = (page) => {
         setPage(page);
@@ -22,7 +22,7 @@ function DashboardDistrictScreen({districts}) {
         setSearch(e.target.value)
         setPage(1)
         var search = e.target.value
-        router.get(`/dashboard//hr/employee`, {
+        router.get(`/dashboard/districts`, {
             search, page: 1
         }, {
             preserveState: true, preserveScroll: true, onSuccess: () => {
@@ -135,8 +135,8 @@ function DashboardDistrictScreen({districts}) {
                 highlightOnHover
                 pagination
                 paginationServer
-                paginationTotalRows={''}
-                paginationPerPage={''}
+                paginationTotalRows={districts.total}
+                paginationPerPage={districts.per_page}
                 onChangePage={handlePageChange}
                 paginationRowsPerPageOptions={[]}
 

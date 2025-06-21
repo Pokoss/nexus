@@ -1,18 +1,21 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import Layout from './Layouts/components/Layout'
 import DataTable from 'react-data-table-component';
-import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Option, Typography } from '@material-tailwind/react';
+import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Option, Spinner, Typography } from '@material-tailwind/react';
 import { router, useForm } from '@inertiajs/react';
 import Select from 'react-select'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function DashboardSubcountyScreen({ subcounties, districts }) {
     const { data, setData, processing, post, reset, errors } = useForm();
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     console.log(subcounties)
     const fetchData = (page) => {
-        router.get(`/dashboard/accounting/expenses`, { page, search }, { preserveState: true });
+        router.get(`/dashboard/subcounty`, { page, search }, { preserveState: true });
     };
     const handlePageChange = (page) => {
         setPage(page);
@@ -24,7 +27,7 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
         setSearch(e.target.value)
         setPage(1)
         var search = e.target.value
-        router.get(`/dashboard//hr/employee`, {
+        router.get(`/dashboard/subcounty`, {
             search, page: 1
         }, {
             preserveState: true, preserveScroll: true, onSuccess: () => {
@@ -60,11 +63,59 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
             setLoadingCounties(false);
         }
     };
+    const postEdit = (event) => {
+        event.preventDefault();
+
+        toast.loading();
+        if (editSubcounty == '') {
+            toast.dismiss()
+        }
+        else {
+            try {
+
+                router.post('/dashboard/subcounty/edit', { subcounty: editSubcounty, id: editId },
+                    {
+                        onSuccess: () => {
+                            toast.success('Subcounty edited successfully');
+                            handleOpenEdit();
+                        }
+                    }
+                )
+            } catch (error) {
+                toast.dismiss()
+                toast.error(error);
+            }
+        }
+
+    }
+
+
+    const postDelete = (event) => {
+        event.preventDefault();
+
+        try {
+            router.post('/dashboard/subcounty/delete', { parish_id: editId },
+                {
+                    onSuccess: () => {
+                        toast.success('Subcounty deleted');
+                        handleOpenEdit()
+                        // setSelectedOption(useState(null));
+                    }
+                }
+            )
+        } catch (error) {
+            toast.dismiss()
+            toast.error(error);
+        }
+
+
+    }
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        if (isSubmitting) return; // Prevent multiple submissions
+        setIsSubmitting(true);
 
         // toast.success(data.name)
 
@@ -75,6 +126,7 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
                 reset();
                 setData({})
                 handleOpen();
+                setIsSubmitting(false);
             }
         });
 
@@ -85,19 +137,20 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
     const [sizeEdit, setSizeEdit] = useState(null);
     const handleOpenEdit = (value) => setSizeEdit(value);
 
-     
-                const [editSubcounty,setEditSubcounty] = useState('');
-                const [editCounty,setEditCounty] = useState('');
-                const [editDistrict,setEditDistrict] = useState('');
-        
-                function editTheSubcounty( subcounty, county,district) {
-                handleOpenEdit("xl")
-    
-               
-                setEditSubcounty(subcounty);
-                setEditCounty(county);
-                setEditDistrict(district);
-            }
+
+    const [editSubcounty, setEditSubcounty] = useState('');
+    const [editCounty, setEditCounty] = useState('');
+    const [editDistrict, setEditDistrict] = useState('');
+    const [editId, setEditId] = useState('');
+
+    function editTheSubcounty(subcounty, county, district, id) {
+        handleOpenEdit("xl")
+
+
+        setEditSubcounty(subcounty);
+        setEditCounty(county);
+        setEditId(id);
+    }
 
     const customStyles = {
         headRow: {
@@ -144,10 +197,10 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
             selector: row => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }),
         },
         {
-            selector: row => <button onClick={() => editTheSubcounty( row.subcounty,row.county.county,row.county.district.district, row.id)} className='bg-green-600 rounded-md p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                </svg>
-                </button>
+            selector: row => <button onClick={() => editTheSubcounty(row.subcounty, row.county.county, row.county.district.district, row.id)} className='bg-green-600 rounded-md p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+            </svg>
+            </button>
         },]
     return (
         <div>
@@ -183,10 +236,11 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
                 highlightOnHover
                 pagination
                 paginationServer
-                paginationTotalRows={''}
-                paginationPerPage={''}
+                paginationTotalRows={subcounties.total}
+                paginationPerPage={subcounties.per_page}
                 onChangePage={handlePageChange}
                 paginationRowsPerPageOptions={[]}
+      
 
 
             // expandOnRowClicked={expandOnRowClicked && ExpandableComponent}
@@ -255,8 +309,12 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
                             </Button>
 
 
-                            <Button type='submit' className='bg-black'>
-                                Add
+                            <Button
+                                type="submit"
+                                className="bg-black"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? <Spinner size="sm" /> : 'Save'}
                             </Button>
 
 
@@ -279,7 +337,7 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
                         </Typography>
                     </DialogHeader>
                     <form
-                    // onSubmit={postEdit}
+                        onSubmit={postEdit}
                     >
                         <DialogBody divider className="grid place-items-center gap-4">
 
@@ -290,17 +348,17 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
                             <Input color='deep-orange' label='County' disabled
                                 value={editCounty} onChange={(event) => setEditCounty(event.target.value)} size='sm'
                             />
-                            <Input color='deep-orange' label='Subcounty' 
+                            <Input color='deep-orange' label='Subcounty'
                                 value={editSubcounty} onChange={(event) => setEditSubcounty(event.target.value)} size='sm'
                             />
-                            
+
 
 
                         </DialogBody>
                         <DialogFooter>
                             <div className='flex w-full justify-between'>
                                 <Button
-                                    // onClick={postDelete} 
+                                    onClick={postDelete}
                                     variant="gradient" color="red">
                                     Delete
                                 </Button>
@@ -317,6 +375,7 @@ function DashboardSubcountyScreen({ subcounties, districts }) {
                     </form>
                 </Dialog>
             </Fragment>
+            <ToastContainer />
         </div>
     )
 }

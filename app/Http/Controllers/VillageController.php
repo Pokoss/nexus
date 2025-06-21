@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\District;
+use App\Models\Person;
 use App\Models\Village;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,7 +17,6 @@ class VillageController extends Controller
 {
     $search = $request->input('search');
 
-    // Query villages with relationship and optional search
     $query = Village::with('parish.subcounty.county.district');
 
     if ($search) {
@@ -77,9 +77,15 @@ class VillageController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Village $village)
+    public function edit(Request $village)
     {
         //
+
+        $the_village = Village::where('id',$village->id)->first();
+        $the_village->update([
+            'village' => strtoupper($village->village)
+        ]);
+        return redirect()->back()->with('success', 'Village updated successfully.');
     }
 
     /**
@@ -93,8 +99,18 @@ class VillageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Village $village)
+    public function destroy(Request $village)
     {
         //
+        $the_village = Village::where('id', $village->village_id)->first();
+        $Person = Person::where('village_id', $village->village_id)->count();
+        if ($Person > 0) {
+            return redirect()->back()->with('error', 'Village cannot be deleted because it has people.');
+        } else {
+    
+            $the_village->delete();
+        }
+
+
     }
 }

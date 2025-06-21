@@ -2,10 +2,11 @@ import React from 'react'
 import Layout from './Layouts/components/Layout'
 import { router, useForm } from '@inertiajs/react';
 import DataTable from 'react-data-table-component';
-import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Typography } from '@material-tailwind/react';
+import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Spinner, Typography } from '@material-tailwind/react';
 import { Fragment } from 'react';
 import Select from 'react-select'
 import { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 
 function DashboardParishScreen({ parishes, districts }) {
     const { data, setData, processing, post, reset, errors } = useForm();
@@ -13,7 +14,7 @@ function DashboardParishScreen({ parishes, districts }) {
     const [page, setPage] = useState(1);
     console.log(parishes)
     const fetchData = (page) => {
-        router.get(`/dashboard/accounting/expenses`, { page, search }, { preserveState: true });
+        router.get(`/dashboard/parish`, { page, search }, { preserveState: true });
     };
     const handlePageChange = (page) => {
         setPage(page);
@@ -25,7 +26,7 @@ function DashboardParishScreen({ parishes, districts }) {
         setSearch(e.target.value)
         setPage(1)
         var search = e.target.value
-        router.get(`/dashboard//hr/employee`, {
+        router.get(`/dashboard/parish`, {
             search, page: 1
         }, {
             preserveState: true, preserveScroll: true, onSuccess: () => {
@@ -38,8 +39,8 @@ function DashboardParishScreen({ parishes, districts }) {
     const [loadingSubCounties, setLoadingSubCounties] = useState(false);
 
     const [selectedCounty, setSelectedCounty] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-  
     const [subcounties, setSubcounties] = useState([]);
 
     // Format options for react-select
@@ -86,16 +87,66 @@ function DashboardParishScreen({ parishes, districts }) {
         }
     };
 
+    const postDelete = (event) => {
+        event.preventDefault();
+
+        try {
+            router.post('/dashboard/parish/delete', { parish_id: editId },
+                {
+                    onSuccess: () => {
+                        toast.success('Parish deleted');
+                        handleOpenEdit()
+                        // setSelectedOption(useState(null));
+
+                    }
+                },
+            )
+        } catch (error) {
+            toast.dismiss()
+            toast.error(error);
+        }
+
+
+    }
+
+    const postEdit = (event) => {
+        event.preventDefault();
+
+        toast.loading();
+        if (editParish == '') {
+            toast.dismiss()
+        }
+        else {
+            try {
+
+                router.post('/dashboard/parish/edit', { parish: editParish, id: editId },
+                    {
+                        onSuccess: () => {
+                            toast.success('Parish edited successfully');
+                            handleOpenEdit();
+                        }
+                    }
+                )
+            } catch (error) {
+                toast.dismiss()
+                toast.error(error);
+            }
+        }
+
+    }
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        if (isSubmitting) return; // Prevent multiple submissions
+        setIsSubmitting(true);
 
         // toast.success(data.name)
 
         post('/dashboard/parish/post', {
             preserveScroll: true, preserveState: true,
             onSuccess: () => {
+                setIsSubmitting(false);
                 //   toast.success('We have received you request, we shall contact you shortly')
                 reset();
                 setData({})
@@ -115,20 +166,22 @@ function DashboardParishScreen({ parishes, districts }) {
     const [sizeEdit, setSizeEdit] = useState(null);
     const handleOpenEdit = (value) => setSizeEdit(value);
 
-      
-            const [editParish,setEditParish] = useState('');
-            const [editSubcounty,setEditSubcounty] = useState('');
-            const [editCounty,setEditCounty] = useState('');
-            const [editDistrict,setEditDistrict] = useState('');
-    
-            function editTheParish(parish, subcounty, county,district) {
-            handleOpenEdit("xl")
 
-            setEditParish(parish);
-            setEditSubcounty(subcounty);
-            setEditCounty(county);
-            setEditDistrict(district);
-        }
+    const [editParish, setEditParish] = useState('');
+    const [editSubcounty, setEditSubcounty] = useState('');
+    const [editCounty, setEditCounty] = useState('');
+    const [editDistrict, setEditDistrict] = useState('');
+    const [editId, setEditId] = useState('');
+
+    function editTheParish(parish, subcounty, county, district, id) {
+        handleOpenEdit("xl")
+
+        setEditParish(parish);
+        setEditSubcounty(subcounty);
+        setEditCounty(county);
+        setEditDistrict(district);
+        setEditId(id);
+    }
 
     const customStyles = {
         headRow: {
@@ -179,10 +232,10 @@ function DashboardParishScreen({ parishes, districts }) {
             selector: row => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }),
         },
         {
-            selector: row => <button onClick={() => editTheParish( row.parish,row.subcounty.subcounty,row.subcounty.county.county,row.subcounty.county.district.district, row.id)} className='bg-green-600 rounded-md p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                </svg>
-                </button>
+            selector: row => <button onClick={() => editTheParish(row.parish, row.subcounty.subcounty, row.subcounty.county.county, row.subcounty.county.district.district, row.id)} className='bg-green-600 rounded-md p-1'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+            </svg>
+            </button>
         },]
 
     return (
@@ -220,12 +273,10 @@ function DashboardParishScreen({ parishes, districts }) {
                 highlightOnHover
                 pagination
                 paginationServer
-                paginationTotalRows={''}
-                paginationPerPage={''}
+                paginationTotalRows={parishes.total}
+                paginationPerPage={parishes.per_page}
                 onChangePage={handlePageChange}
                 paginationRowsPerPageOptions={[]}
-
-
             // expandOnRowClicked={expandOnRowClicked && ExpandableComponent}
             // expandableRows={ExpandableComponent}
             // expandableRowsComponent={ExpandableComponent}
@@ -312,7 +363,7 @@ function DashboardParishScreen({ parishes, districts }) {
                                     <Select
                                         options={subcountiesOptions}
                                         value={subcountiesOptions.find(opt => opt.value === data.subcounty)}
-                                        onChange={(option) =>{ setData('subcounty', option?.value || '');   }}
+                                        onChange={(option) => { setData('subcounty', option?.value || ''); }}
                                         isDisabled={!data.county || loadingSubCounties}
                                         placeholder={loadingSubCounties ? 'Loading...' : 'Select subcounty'}
                                         className="text-sm"
@@ -330,8 +381,12 @@ function DashboardParishScreen({ parishes, districts }) {
                             </Button>
 
 
-                            <Button type='submit' className='bg-black'>
-                                Add
+                            <Button
+                                type="submit"
+                                className="bg-black"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? <Spinner size="sm" /> : 'Save'}
                             </Button>
 
 
@@ -341,59 +396,60 @@ function DashboardParishScreen({ parishes, districts }) {
 
             </Fragment>
             <Fragment>
-                            <Dialog
-                                open={
-                                    sizeEdit === "xl"
-                                }
-                                size={sizeEdit}
-                                handler={handleOpenEdit}
-                            >
-                                <DialogHeader>
-                                    <Typography variant="h5" color="blue-gray">
-                                        Edit Parish
-                                    </Typography>
-                                </DialogHeader>
-                                <form
-                                    // onSubmit={postEdit}
-                                >
-                                    <DialogBody divider className="grid place-items-center gap-4">
-            
-            
-                                        <Input color='deep-orange' label='District' disabled
-                                            value={editDistrict} onChange={(event) => setEditDistrict(event.target.value)} size='sm'
-                                        />
-                                        <Input color='deep-orange' label='County' disabled
-                                            value={editCounty} onChange={(event) => setEditCounty(event.target.value)} size='sm'
-                                        />
-                                        <Input color='deep-orange' label='Subcounty' disabled
-                                            value={editSubcounty} onChange={(event) => setEditSubcounty(event.target.value)} size='sm'
-                                        />
-                                        <Input color='deep-orange' label='Parish' 
-                                            value={editParish} onChange={(event) => setEditParish(event.target.value)} size='sm'
-                                        />
-                                        
-                                        
-                                    </DialogBody>
-                                    <DialogFooter>
-                                        <div className='flex w-full justify-between'>
-                                            <Button 
-                                            // onClick={postDelete} 
-                                            variant="gradient" color="red">
-                                                Delete
-                                            </Button>
-                                            <div className="space-x-2">
-                                                <Button onClick={handleOpenEdit} variant="gradient" color="blue-gray">
-                                                    Close
-                                                </Button>
-                                                <Button type='submit' className='bg-black'>
-                                                    Edit
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </DialogFooter>
-                                </form>
-                            </Dialog>
-                        </Fragment>
+                <Dialog
+                    open={
+                        sizeEdit === "xl"
+                    }
+                    size={sizeEdit}
+                    handler={handleOpenEdit}
+                >
+                    <DialogHeader>
+                        <Typography variant="h5" color="blue-gray">
+                            Edit Parish
+                        </Typography>
+                    </DialogHeader>
+                    <form
+                        onSubmit={postEdit}
+                    >
+                        <DialogBody divider className="grid place-items-center gap-4">
+
+
+                            <Input color='deep-orange' label='District' disabled
+                                value={editDistrict} onChange={(event) => setEditDistrict(event.target.value)} size='sm'
+                            />
+                            <Input color='deep-orange' label='County' disabled
+                                value={editCounty} onChange={(event) => setEditCounty(event.target.value)} size='sm'
+                            />
+                            <Input color='deep-orange' label='Subcounty' disabled
+                                value={editSubcounty} onChange={(event) => setEditSubcounty(event.target.value)} size='sm'
+                            />
+                            <Input color='deep-orange' label='Parish'
+                                value={editParish} onChange={(event) => setEditParish(event.target.value)} size='sm'
+                            />
+
+
+                        </DialogBody>
+                        <DialogFooter>
+                            <div className='flex w-full justify-between'>
+                                <Button
+                                    onClick={postDelete}
+                                    variant="gradient" color="red">
+                                    Delete
+                                </Button>
+                                <div className="space-x-2">
+                                    <Button onClick={handleOpenEdit} variant="gradient" color="blue-gray">
+                                        Close
+                                    </Button>
+                                    <Button type='submit' className='bg-black'>
+                                        Edit
+                                    </Button>
+                                </div>
+                            </div>
+                        </DialogFooter>
+                    </form>
+                </Dialog>
+            </Fragment>
+            <ToastContainer />
         </div>
     )
 }
