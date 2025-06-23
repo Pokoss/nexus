@@ -65,7 +65,7 @@ function HomeScreen() {
           </div>
           <div className="flex flex-col justify-start m-2 lg:m-6">
             <p className="text-4xl font-bold leadi lg:text-6xl">1</p>
-            <p className="text-sm sm:text-base">Years of exsitance</p>
+            <p className="text-sm sm:text-base">Year of exsitance</p>
           </div>
           <div className="flex flex-col justify-start m-2 lg:m-6">
             <p className="text-4xl font-bold leadi lg:text-6xl">6</p>
@@ -122,7 +122,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Hood Sentale K</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cheif Codinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Chief Coordinator</span>
               </div>
             </div>
 
@@ -139,7 +139,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Ocheng Timothy</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div> */}
             <div class="w-full max-w-xs text-center">
@@ -147,7 +147,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Rugumayo Roy</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
 
@@ -156,7 +156,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Kiyimba Shafiq</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
             <div class="w-full max-w-xs text-center">
@@ -164,7 +164,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Kunikina Joseph Napututaliu</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
             
@@ -173,7 +173,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Nakeyune Mary</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
             <div class="w-full max-w-xs text-center">
@@ -181,7 +181,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Kaweesi Roy Keith</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
             <div class="w-full max-w-xs text-center">
@@ -189,7 +189,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Nakake Angel</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator/Admin</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator/Admin</span>
               </div>
             </div>
             <div class="w-full max-w-xs text-center">
@@ -197,7 +197,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Amtuheire Maryline</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
             <div class="w-full max-w-xs text-center">
@@ -205,7 +205,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Ocheng Timothy</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
             <div class="w-full max-w-xs text-center">
@@ -213,7 +213,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Wamakota Alex</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
             <div class="w-full max-w-xs text-center">
@@ -221,7 +221,7 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Beinomugisha Mable</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
             

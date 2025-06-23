@@ -46,7 +46,7 @@ function Footer() {
                 title="Our email"
                 className="transition-colors duration-300 text-gray-100 hover:text-deep-purple-800"
               >
-                info@lehub.dev
+                info@kikumikikumi.com
               </a>
             </div>
             <div className="flex">

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
           
          <!-- Primary Meta Tags -->
-    <title inertia>@isset($title){{$title}}@else Biashari @endisset</title>
+    <title inertia>@isset($title){{$title}}@else Kikumi Kikumi Community @endisset</title>
     <meta name="title" content="@isset($title){{$title}}@else Kikumi Kikumi Community @endisset">
     <meta name="description" content="@isset($description){{$description}}@else A community of opportunities for Ugandans aimed at building self-sufficient, modern, healthy, and progressive societies using resources and means available to them. @endisset">
 
