@@ -5,6 +5,30 @@ import { Typography } from '@material-tailwind/react'
 import Footer from '@/Components/Footer'
 
 function HomeScreen() {
+  const team = [
+  {
+    name: "Col. Allan Kitanda",
+    role: "God Father",
+    image: "/images/team/allan.jpg",
+  },
+  {
+    name: "Col. Yusuf Magero Buha",
+    role: "God Father",
+    image: "/images/team/buha.jpg",
+  },
+  {
+    name: "Brig Gen. Mbaine Julius",
+    role: "God Father",
+    image: "/images/team/julius.jpg",
+  },
+  {
+    name: "Col. Nelson Ahebwa",
+    role: "God Father",
+    image: "/images/team/nelson.jpg",
+  },
+];
+
+
   return (
     <div>
       <Navbar />
@@ -66,6 +90,24 @@ function HomeScreen() {
       </section> */}
   
 
+<section className="bg-white py-20">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12">Kikumi Kikumi Community is possible because of</h2>
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 items-center">
+            {team.map((member, idx) => (
+              <div key={idx} className="bg-gray-100 rounded-lg shadow hover:shadow-lg transition p-4">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-60 object-cover rounded-lg mb-4"
+                />
+                <h4 className="text-xl font-semibold">{member.name}</h4>
+                <p className="text-orange-600 font-medium">{member.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section class="bg-white ">
 
@@ -147,6 +189,38 @@ function HomeScreen() {
 
               <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-700 ">Nakake Angel</h3>
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator/Admin</span>
+              </div>
+            </div>
+            <div class="w-full max-w-xs text-center">
+              <img class="object-cover w-full h-48 mx-auto rounded-lg" src="/images/team/marylin.jpg" alt="Joseph" />
+
+              <div class="mt-2">
+                <h3 class="text-lg font-medium text-gray-700 ">Amtuheire Maryline</h3>
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+              </div>
+            </div>
+            <div class="w-full max-w-xs text-center">
+              <img class="object-cover w-full h-48 mx-auto rounded-lg" src="/images/team/timo.jpg" alt="Joseph" />
+
+              <div class="mt-2">
+                <h3 class="text-lg font-medium text-gray-700 ">Ocheng Timothy</h3>
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+              </div>
+            </div>
+            <div class="w-full max-w-xs text-center">
+              <img class="object-cover w-full h-48 mx-auto rounded-lg" src="/images/team/wamakota.jpg" alt="Joseph" />
+
+              <div class="mt-2">
+                <h3 class="text-lg font-medium text-gray-700 ">Wamakota Alex</h3>
+                <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
+              </div>
+            </div>
+            <div class="w-full max-w-xs text-center">
+              <img class="object-cover w-full h-48 mx-auto rounded-lg" src="/images/team/mable.jpg" alt="Joseph" />
+
+              <div class="mt-2">
+                <h3 class="text-lg font-medium text-gray-700 ">Beinomugisha Mable</h3>
                 <span class="mt-1 font-medium text-gray-600 ">Cordinator</span>
               </div>
             </div>
