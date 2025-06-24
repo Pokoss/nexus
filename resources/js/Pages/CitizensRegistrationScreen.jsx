@@ -119,10 +119,9 @@ function CitizensRegistrationScreen({ districts, the_user }) {
   };
   const isValidNIN = (nin) => {
   const formattedNIN = nin.toUpperCase();
-  // 2 uppercase letters + 9 digits + 3 uppercase letters or digits (ending in a letter)
-  const ninRegex = /^[A-Z]{2}\d{9}[A-Z0-9]{2}[A-Z]$/;
+  const ninRegex = /^[A-Z]{2}[A-Z0-9]{11}[A-Z]$/;
   return formattedNIN.length === 14 && ninRegex.test(formattedNIN);
-  };
+};
   const isValidPhoneNumber = (phone) => {
         const phoneRegex = /^07\d{8}$/;
         return phoneRegex.test(phone);
