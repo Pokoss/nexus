@@ -6,27 +6,27 @@ import Footer from '@/Components/Footer'
 
 function HomeScreen() {
   const team = [
-  {
-    name: "Col. Allan Kitanda",
-    role: "God Father",
-    image: "/images/team/allan.jpg",
-  },
-  {
-    name: "Col. Yusuf Magero Buha",
-    role: "God Father",
-    image: "/images/team/buha.jpg",
-  },
-  {
-    name: "Brig Gen. Mbaine Julius",
-    role: "God Father",
-    image: "/images/team/julius.jpg",
-  },
-  {
-    name: "Col. Nelson Ahebwa",
-    role: "God Father",
-    image: "/images/team/nelson.jpg",
-  },
-];
+    {
+      name: "Brig Gen. Mbaine Julius",
+      role: "God Father",
+      image: "/images/team/julius.jpg",
+    },
+    {
+      name: "Col. Allan Kitanda",
+      role: "God Father",
+      image: "/images/team/allan.jpg",
+    },
+    {
+      name: "Col. Yusuf Magero Buha",
+      role: "God Father",
+      image: "/images/team/buha.jpg",
+    },
+    {
+      name: "Col. Nelson Ahebwa",
+      role: "God Father",
+      image: "/images/team/nelson.jpg",
+    },
+  ];
 
 
   return (
@@ -88,9 +88,9 @@ function HomeScreen() {
 
         </div>
       </section> */}
-  
 
-<section className="bg-white py-20">
+
+      <section className="bg-white py-20">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-12">Kikumi Kikumi Community is possible because of</h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 items-center">
@@ -115,7 +115,7 @@ function HomeScreen() {
           <h2 class="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl ">Our <span className='text-primary'>Team</span></h2>
 
           <div class="grid gap-8 mt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 justify-center w-full">
-            
+
 
             <div class="w-full max-w-xs text-center">
               <img class="object-cover w-full h-48 mx-auto rounded-lg" src="/images/team/hood.jpg" alt="avatar" />
@@ -167,7 +167,7 @@ function HomeScreen() {
                 <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
-            
+
             <div class="w-full max-w-xs text-center">
               <img class="object-cover object-top w-full h-48 mx-auto rounded-lg" src="/images/team/mary.jpg" alt="Joseph" />
 
@@ -224,7 +224,7 @@ function HomeScreen() {
                 <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div>
-            
+
             {/* <div class="w-full max-w-xs text-center">
               <img class="object-cover object-top w-full h-48 mx-auto rounded-lg" src="/images/team/mary.jpg" alt="Joseph" />
 
@@ -257,7 +257,7 @@ function HomeScreen() {
       </section>
 
 
-   
+
 
 
       <div className="bg-gray-100 py-12">
@@ -293,8 +293,8 @@ function HomeScreen() {
                   </dt>
                   <dd className="mt-2 text-base text-gray-500">
                     Kati House Level 3 Kampala, Uganda<br />
-                    
-                    
+
+
                   </dd>
                 </div>
               </div>
@@ -361,8 +361,8 @@ function HomeScreen() {
                   </dt>
                   <dd className="mt-2 text-base text-gray-500">
                     Monday -  Friday: 9am to 5pm<br />
-            
-                 
+
+
                   </dd>
                 </div>
               </div>
@@ -373,7 +373,7 @@ function HomeScreen() {
 
 
 
-<Footer/>
+      <Footer />
 
     </div>
   )
