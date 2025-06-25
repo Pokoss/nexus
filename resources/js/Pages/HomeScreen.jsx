@@ -68,7 +68,7 @@ function HomeScreen() {
             <p className="text-sm sm:text-base">Year of exsitance</p>
           </div>
           <div className="flex flex-col justify-start m-2 lg:m-6">
-            <p className="text-4xl font-bold leadi lg:text-6xl">6</p>
+            <p className="text-4xl font-bold leadi lg:text-6xl">12</p>
             <p className="text-sm sm:text-base">Team Members</p>
           </div>
 
