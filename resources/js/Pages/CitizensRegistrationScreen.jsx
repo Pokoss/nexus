@@ -9,7 +9,7 @@ import Navbar from './Components/Navbar'
 import Footer from '@/Components/Footer';
 import { toast, ToastContainer } from 'react-toastify';
 
-function CitizensRegistrationScreen({ districts, the_user }) {
+function CitizensRegistrationScreen({ districts, the_user,occupations }) {
 
   console.log(the_user)
   const { data, setData, post, reset, errors } = useForm({
@@ -21,6 +21,7 @@ function CitizensRegistrationScreen({ districts, the_user }) {
     subcounty: '',
     parish: '',
     village: '',
+    occupation: '',
     user: the_user?.id || null
   });
   const [counties, setCounties] = useState([]);
@@ -59,6 +60,11 @@ function CitizensRegistrationScreen({ districts, the_user }) {
   const villageOptions = villages.map(v => ({
     value: v.id,
     label: v.village, // MUST match your API key
+  }));
+
+  const occupationOptions = occupations.map(o => ({
+    value: o.id,
+    label: o.occupation, // MUST match your API key
   }));
 
   const fetchCounties = async (districtId) => {
@@ -153,6 +159,8 @@ function CitizensRegistrationScreen({ districts, the_user }) {
         }
     else {
       try {
+
+        console.log("Submitting data:", data);
         post('/join/post', {
           preserveScroll: true, preserveState: true,
           onSuccess: () => {
@@ -206,6 +214,18 @@ function CitizensRegistrationScreen({ districts, the_user }) {
               />
             </div>
 
+            <div className="my-3">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Occupation</label>
+              <Select
+                options={occupationOptions}
+                value={occupationOptions.find(opt => opt.value === data.occupation)} error={errors.occupation}
+                onChange={(option) => {
+                  setData('occupation', option?.value || '');
+                }}
+                placeholder="Select Occupation..."
+                className="text-sm"
+              />
+            </div>
             <div className="my-3">
               <label className="block text-sm font-medium text-gray-700 mb-1">District</label>
               <Select

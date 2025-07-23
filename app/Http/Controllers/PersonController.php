@@ -6,6 +6,7 @@ use App\Models\District;
 use App\Models\Person;
 use App\Models\User;
 use App\Models\Village;
+use App\Models\Occupation;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,9 +41,17 @@ class PersonController extends Controller
 
         $the_user = User::where('slug', $slug)->first();
         $districts = District::all();
+       $occupation = Occupation::orderByRaw("
+    CASE occupation
+        WHEN 'UNEMPLOYED' THEN 2
+        WHEN 'OTHER' THEN 3
+        ELSE 1
+    END,
+    occupation
+")->get();
 
 
-        return Inertia::render('CitizensRegistrationScreen', ['districts' => $districts, 'the_user' => $the_user]);
+        return Inertia::render('CitizensRegistrationScreen', ['districts' => $districts, 'the_user' => $the_user, 'occupations' => $occupation]);
     }
     public function mylink()
     {
@@ -84,7 +93,10 @@ class PersonController extends Controller
             'search' => $request->input('search', ''),
         ];
 
-        $query = Person::query()->with('village.parish.subcounty.county.district');
+        $query = Person::query()->with([
+            'village.parish.subcounty.county.district', // nested relationships
+            'occupation' // separate relationship
+        ]);
 
         // Apply filters dynamically
         if ($filters['district_id']) {
@@ -179,6 +191,7 @@ class PersonController extends Controller
                 'nin' => strtoupper($request->nin),
                 'phone' => $request->phone,
                 'district_id' => $request->district,
+                'occupation_id' => $request->occupation,
                 'county_id' => $request->county,
                 'subcounty_id' => $request->subcounty,
                 'parish_id' => $request->parish,

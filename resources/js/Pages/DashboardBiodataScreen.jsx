@@ -216,6 +216,7 @@ function DashboardBiodataScreen({ people, districts }) {
         { name: 'Full Name', selector: row => row.name },
         { name: 'NIN', selector: row => row.nin },
         { name: 'Phone', selector: row => row.phone },
+        { name: 'Occupation', selector: row => row.occupation?.occupation || 'Not specified' },
         { name: 'District', selector: row => row.village?.parish?.subcounty?.county?.district?.district },
         { name: 'County', selector: row => row.village?.parish?.subcounty?.county?.county },
         { name: 'Subcounty', selector: row => row.village?.parish?.subcounty?.subcounty },

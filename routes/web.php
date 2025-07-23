@@ -7,6 +7,7 @@ use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubcountyController;
 use App\Http\Controllers\VillageController;
+use App\Http\Controllers\OccupationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/dashboard/occupation', [OccupationController::class, 'index']);
+    Route::post('/dashboard/occupation/post', [OccupationController::class, 'store']);
+    Route::post('/dashboard/occupation/edit', [OccupationController::class, 'edit']);
 
     Route::get('/dashboard/home', [PersonController::class, 'home']);
     Route::get('/dashboard/districts', [DistrictController::class, 'index']);
