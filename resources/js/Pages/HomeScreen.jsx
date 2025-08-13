@@ -58,7 +58,7 @@ function HomeScreen() {
                 <Carousel
                     autoplay
                     loop
-                    transition={{ duration: 2 }}
+                    transition={{ duration: 0.5 }}
                     className="h-[80vh] rounded-none"
                     prevArrow={({ handlePrev }) => (
                         <button
