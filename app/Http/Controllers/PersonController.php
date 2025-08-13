@@ -54,7 +54,7 @@ class PersonController extends Controller
         return Inertia::render('CitizensRegistrationScreen', ['districts' => $districts, 'the_user' => $the_user, 'occupations' => $occupation])
         ->withViewData([
             'title' => $the_user->name  . ' Invites You To Kikumi Kikumi Community',
-            'description' => '',
+            'description' => ' A community of opportunities for Ugandans aimed at building self-sufficient, modern, healthy, and progressive societies using resources and means available to them.',
         ]);
     }
     public function mylink()
