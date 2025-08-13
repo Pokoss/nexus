@@ -41,7 +41,7 @@ class PersonController extends Controller
 
         $the_user = User::where('slug', $slug)->first();
         $districts = District::all();
-       $occupation = Occupation::orderByRaw("
+        $occupation = Occupation::orderByRaw("
     CASE occupation
         WHEN 'UNEMPLOYED' THEN 2
         WHEN 'OTHER' THEN 3
@@ -51,7 +51,11 @@ class PersonController extends Controller
 ")->get();
 
 
-        return Inertia::render('CitizensRegistrationScreen', ['districts' => $districts, 'the_user' => $the_user, 'occupations' => $occupation]);
+        return Inertia::render('CitizensRegistrationScreen', ['districts' => $districts, 'the_user' => $the_user, 'occupations' => $occupation])
+        ->withViewData([
+            'title' => $the_user->name  . ' Invites You To Kikumi Kikumi Community',
+            'description' => '',
+        ]);
     }
     public function mylink()
     {
@@ -63,7 +67,7 @@ class PersonController extends Controller
                 'title' => 'Join Kikumi Kikumi Community',
                 'description' => 'Experience a vast array of services and products from our community',
 
-            ]);;;
+            ]);
         }
 
         $my_people = Person::where('registered_by', $my_data->id)->with('village.parish.subcounty.county.district')->paginate(10);
@@ -72,7 +76,7 @@ class PersonController extends Controller
             'title' => 'Join Kikumi Kikumi Community',
             'description' => 'Experience a vast array of services and products from our community',
 
-        ]);;;
+        ]);
     }
 
     public function getPeople(Request $request)
