@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./Components/Navbar";
 import { Link } from "@inertiajs/react";
-import { Typography } from "@material-tailwind/react";
+import { Carousel, Typography } from "@material-tailwind/react";
 import Footer from "@/Components/Footer";
 
 function HomeScreen() {
@@ -27,32 +27,91 @@ function HomeScreen() {
             image: "/images/team/nelson.jpg",
         },
     ];
+     const slides = [
+    {
+      image: "/images/resources/hero1.jpg",
+      title: "KIKUMI KIKUMI COMMUNITY",
+      description:
+        "A community of opportunities for Ugandans aimed at building self-sufficient, modern, healthy, and progressive societies using resources available to them.",
+      link: "/join/opoka-daniel-se0ll1urgmhavv6g",
+    },
+    {
+      image: "/images/resources/hero6.jpg",
+      title: "Empowering Communities",
+      description:
+        "Join hands with us to create sustainable solutions and empower communities for a brighter future.",
+      link: "/join/opoka-daniel-se0ll1urgmhavv6g",
+    },
+    {
+      image: "/images/resources/hero5.jpg",
+      title: "Be Part of the Change",
+      description:
+        "Your participation matters. Together, we can transform lives and build a better Uganda.",
+      link: "/join/opoka-daniel-se0ll1urgmhavv6g",
+    },
+  ];
 
     return (
         <div>
             <Navbar />
-            <section>
-                <div className="container flex flex-col items-center px-4 py-8 mx-auto text-center md:px-10 lg:px-32 xl:max-w-3xl">
-                    <h1 className="text-4xl font-bold leadi sm:text-5xl">
-                        KIKUMI KIKUMI COMMUNITY
-                    </h1>
-                    <p className="px-8 mt-8 mb-12 text-lg">
-                        A community of opportunities for Ugandans aimed at
-                        building self-sufficient, modern, healthy, and
-                        progressive societies using resources and means
-                        available to them.
-                    </p>
-                    <div className="flex flex-wrap justify-center">
-                        {/* <Link href='/company' className="px-8 py-3 m-2 text-lg font-semibold rounded bg-black shadow-sm shadow-primary  text-gray-100">Scan</Link> */}
-                        <Link
-                            href="/join/opoka-daniel-se0ll1urgmhavv6g"
-                            className="px-8 py-3 m-2 text-lg border bg-black text-white rounded "
+            <section className="relative">
+                <Carousel
+                    autoplay
+                    loop
+                    transition={{ duration: 2 }}
+                    className="h-[80vh] rounded-none"
+                    prevArrow={({ handlePrev }) => (
+                        <button
+                            onClick={handlePrev}
+                            className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full"
                         >
-                            Join Us
-                        </Link>
-                    </div>
-                </div>
+                            ‹
+                        </button>
+                    )}
+                    nextArrow={({ handleNext }) => (
+                        <button
+                            onClick={handleNext}
+                            className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full"
+                        >
+                            ›
+                        </button>
+                    )}
+                >
+                    {slides.map((slide, index) => (
+                        <div
+                            key={index}
+                            className="relative w-full h-full flex items-center justify-center"
+                        >
+                            {/* Background Image */}
+                            <img
+                                src={slide.image}
+                                alt={slide.title}
+                                className="absolute inset-0 w-full h-full object-cover"
+                            />
+
+                            {/* Dark Overlay */}
+                            <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+
+                            {/* Content */}
+                            <div className="relative z-10 text-center text-white px-6 max-w-3xl">
+                                <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
+                                    {slide.title}
+                                </h1>
+                                <p className="mb-6 text-lg md:text-xl drop-shadow-md">
+                                    {slide.description}
+                                </p>
+                                <Link
+                                    href={slide.link}
+                                    className="px-8 py-3 text-lg bg-black rounded shadow-lg hover:bg-primary/90 transition"
+                                >
+                                    Join Us
+                                </Link>
+                            </div>
+                        </div>
+                    ))}
+                </Carousel>
             </section>
+            
             <section className="p-6 dark:bg-gray-800 dark:text-gray-100">
                 <div className="container grid justify-center grid-cols-2 mx-auto text-center lg:grid-cols-3">
                     <div className="flex flex-col justify-start m-2 lg:m-6">
@@ -176,6 +235,22 @@ function HomeScreen() {
                                 </h3>
                                 <span class="mt-1 font-medium text-gray-600 ">
                                     C.T.O
+                                </span>
+                            </div>
+                        </div>
+                        <div class="w-full max-w-xs text-center">
+                            <img
+                                class="object-cover w-full h-48 mx-auto rounded-lg"
+                                src="/images/team/clare.jpg"
+                                alt="clare"
+                            />
+
+                            <div class="mt-2">
+                                <h3 class="text-lg font-medium text-gray-700 ">
+                                    Claire Selina Nangajja
+                                </h3>
+                                <span class="mt-1 font-medium text-gray-600 ">
+                                    Head of Partnerships
                                 </span>
                             </div>
                         </div>
