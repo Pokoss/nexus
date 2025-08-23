@@ -198,257 +198,257 @@ function HomeScreen() {
                 </div>
             </section> */}
 
-            <section class="bg-white ">
-                <div class="container px-6 py-8 mx-auto">
-                    <h2 class="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl ">
+            <section className="bg-white ">
+                <div className="container px-6 py-8 mx-auto">
+                    <h2 className="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl ">
                         Our <span className="text-primary">Team</span>
                     </h2>
 
-                    <div class="grid gap-8 mt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 justify-center w-full">
-                        <div class="w-full max-w-xs text-center">
+                    <div className="grid gap-8 mt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 justify-center w-full">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover w-full h-48 mx-auto rounded-lg"
+                                className="object-cover w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/hood.jpg"
                                 alt="avatar"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Hood Sentale K
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Chief Coordinator
                                 </span>
                             </div>
                         </div>
 
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover w-full h-48 mx-auto rounded-lg"
+                                className="object-cover w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/dan.jpg"
                                 alt="opoka"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Opoka Daniel
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     C.T.O
                                 </span>
                             </div>
                         </div>
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover w-full h-48 mx-auto rounded-lg"
+                                className="object-cover w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/clare.jpg"
                                 alt="clare"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Claire Selina Nangajja
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Head of Partnerships
                                 </span>
                             </div>
                         </div>
-                        {/* <div class="w-full max-w-xs text-center">
-              <img class="object-contain w-full h-48 mx-auto rounded-lg" src="/images/team/timothy.jpg" alt="avatar" />
+                        {/* <div className="w-full max-w-xs text-center">
+              <img className="object-contain w-full h-48 mx-auto rounded-lg" src="/images/team/timothy.jpg" alt="avatar" />
 
-              <div class="mt-2">
-                <h3 class="text-lg font-medium text-gray-700 ">Ocheng Timothy</h3>
-                <span class="mt-1 font-medium text-gray-600 ">Coordinator</span>
+              <div className="mt-2">
+                <h3 className="text-lg font-medium text-gray-700 ">Ocheng Timothy</h3>
+                <span className="mt-1 font-medium text-gray-600 ">Coordinator</span>
               </div>
             </div> */}
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover object-top w-full h-48 mx-auto rounded-lg"
+                                className="object-cover object-top w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/roy.jpg"
                                 alt="Joseph"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Rugumayo Roy
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Coordinator
                                 </span>
                             </div>
                         </div>
 
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover object-top w-full h-48 mx-auto rounded-lg"
+                                className="object-cover object-top w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/shafiq.jpg"
                                 alt="Shafiq"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Kiyimba Shafiq
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Coordinator
                                 </span>
                             </div>
                         </div>
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-contain object-top w-full h-48 mx-auto rounded-lg"
+                                className="object-contain object-top w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/joseph.jpg"
                                 alt="Joseph"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Kunikina Joseph Napututaliu
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Coordinator
                                 </span>
                             </div>
                         </div>
 
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover object-top w-full h-48 mx-auto rounded-lg"
+                                className="object-cover object-top w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/mary.jpg"
                                 alt="Joseph"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Nakeyune Mary
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Coordinator
                                 </span>
                             </div>
                         </div>
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover object-top w-full h-48 mx-auto rounded-lg"
+                                className="object-cover object-top w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/rasta.jpg"
                                 alt="Joseph"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Kaweesi Roy Keith
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Coordinator
                                 </span>
                             </div>
                         </div>
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover w-full h-48 mx-auto rounded-lg"
+                                className="object-cover w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/angel.jpg"
                                 alt="Joseph"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Nakake Angel
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Coordinator/Admin
                                 </span>
                             </div>
                         </div>
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover w-full h-48 mx-auto rounded-lg"
+                                className="object-cover w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/marylin.jpg"
                                 alt="Joseph"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Amtuheire Maryline
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Coordinator
                                 </span>
                             </div>
                         </div>
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover w-full h-48 mx-auto rounded-lg"
+                                className="object-cover w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/timo.jpg"
                                 alt="Joseph"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Ocheng Timothy
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Coordinator
                                 </span>
                             </div>
                         </div>
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover w-full h-48 mx-auto rounded-lg"
+                                className="object-cover w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/wamakota.jpg"
                                 alt="Joseph"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Wamakota Alex
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Coordinator
                                 </span>
                             </div>
                         </div>
-                        <div class="w-full max-w-xs text-center">
+                        <div className="w-full max-w-xs text-center">
                             <img
-                                class="object-cover w-full h-48 mx-auto rounded-lg"
+                                className="object-cover w-full h-48 mx-auto rounded-lg"
                                 src="/images/team/mable.jpg"
                                 alt="Joseph"
                             />
 
-                            <div class="mt-2">
-                                <h3 class="text-lg font-medium text-gray-700 ">
+                            <div className="mt-2">
+                                <h3 className="text-lg font-medium text-gray-700 ">
                                     Beinomugisha Mable
                                 </h3>
-                                <span class="mt-1 font-medium text-gray-600 ">
+                                <span className="mt-1 font-medium text-gray-600 ">
                                     Coordinator
                                 </span>
                             </div>
                         </div>
 
-                        {/* <div class="w-full max-w-xs text-center">
-              <img class="object-cover object-top w-full h-48 mx-auto rounded-lg" src="/images/team/mary.jpg" alt="Joseph" />
+                        {/* <div className="w-full max-w-xs text-center">
+              <img className="object-cover object-top w-full h-48 mx-auto rounded-lg" src="/images/team/mary.jpg" alt="Joseph" />
 
-              <div class="mt-2">
-                <h3 class="text-lg font-medium text-gray-700 ">Mary s</h3>
+              <div className="mt-2">
+                <h3 className="text-lg font-medium text-gray-700 ">Mary s</h3>
            
               </div>
             </div> */}
 
-                        {/* <div class="w-full max-w-xs text-center">
-                <img class="object-cover object-center w-full h-48 mx-auto rounded-lg" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=731&q=80" alt="avatar" />
+                        {/* <div className="w-full max-w-xs text-center">
+                <img className="object-cover object-center w-full h-48 mx-auto rounded-lg" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=731&q=80" alt="avatar" />
 
-                <div class="mt-2">
-                    <h3 class="text-lg font-medium text-gray-700 ">Kigundu Allan</h3>
-                    <span class="mt-1 font-medium text-gray-600 ">Digital / Social Media</span>
+                <div className="mt-2">
+                    <h3 className="text-lg font-medium text-gray-700 ">Kigundu Allan</h3>
+                    <span className="mt-1 font-medium text-gray-600 ">Digital / Social Media</span>
                 </div>
             </div> */}
 
-                        {/* <div class="w-full max-w-xs text-center">
-                <img class="object-cover object-center w-full h-48 mx-auto rounded-lg" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=731&q=80" alt="avatar" />
+                        {/* <div className="w-full max-w-xs text-center">
+                <img className="object-cover object-center w-full h-48 mx-auto rounded-lg" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=731&q=80" alt="avatar" />
 
-                <div class="mt-2">
-                    <h3 class="text-lg font-medium text-gray-700 ">Aleni Feni Joseph</h3>
-                    <span class="mt-1 font-medium text-gray-600 ">Marketing Manager</span>
+                <div className="mt-2">
+                    <h3 className="text-lg font-medium text-gray-700 ">Aleni Feni Joseph</h3>
+                    <span className="mt-1 font-medium text-gray-600 ">Marketing Manager</span>
                 </div>
             </div> */}
                     </div>

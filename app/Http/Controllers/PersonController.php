@@ -142,7 +142,8 @@ class PersonController extends Controller
 
         $search = $request->input('search');
 
-        $query = User::query();
+        // $query = User::query();
+        $query = User::withCount('persons');
 
         if ($search) {
             $query->where(function ($q) use ($search) {

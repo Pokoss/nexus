@@ -56,6 +56,10 @@ function DashboardCodinatorScreen({ codinators }) {
             selector: row => row.nin,
         },
         {
+            name: 'Registered Persons',
+            selector: row => row.persons_count,
+        },
+        {
             name: 'Phone',
             selector: row => row.phone,
         },

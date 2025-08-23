@@ -46,4 +46,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function persons()
+    {
+        return $this->hasMany(Person::class, 'registered_by', 'id');
+    }
 }

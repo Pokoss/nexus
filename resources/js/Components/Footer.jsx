@@ -69,7 +69,7 @@ function Footer() {
             </span>
             <div className="flex items-center mt-1 space-x-3">
               <a
-                href="/"
+                href="https://x.com/kikumicommunity"
                 className="text-gray-100 transition-colors duration-300 hover:text-gray-100"
               >
                 <svg viewBox="0 0 24 24" fill="currentColor" className="h-5">
